@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>홈페이지 견적 요청 시스템 - 무료 상담</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        <?!= include('css'); ?>
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 헤더 섹션 -->
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-laptop-code"></i>
+                <span>홈페이지제작전문</span>
+            </div>
+            <h1>무료 홈페이지 견적 상담</h1>
+            <p class="subtitle">전문가와 1:1 상담으로 최적의 홈페이지를 제작해보세요</p>
+        </header>
+
+        <!-- 진행 상태 표시 -->
+        <div class="progress-bar">
+            <div class="progress-step active" data-step="1">
+                <span class="step-number">1</span>
+                <span class="step-label">기본정보</span>
+            </div>
+            <div class="progress-step" data-step="2">
+                <span class="step-number">2</span>
+                <span class="step-label">업종/유형</span>
+            </div>
+            <div class="progress-step" data-step="3">
+                <span class="step-number">3</span>
+                <span class="step-label">디자인</span>
+            </div>
+            <div class="progress-step" data-step="4">
+                <span class="step-number">4</span>
+                <span class="step-label">기능/일정</span>
+            </div>
+            <div class="progress-step" data-step="5">
+                <span class="step-number">5</span>
+                <span class="step-label">확인/제출</span>
+            </div>
+        </div>
+
+        <!-- 메인 폼 -->
+        <form id="estimateForm">
+            <!-- 1단계: 기본 정보 -->
+            <div class="form-step active" data-step="1">
+                <h2><i class="fas fa-user-circle"></i> 기본 정보</h2>
+                
+                <div class="form-group">
+                    <label for="name">
+                        <i class="fas fa-user"></i> 이름 *
+                    </label>
+                    <input type="text" id="name" name="name" required placeholder="홍길동">
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">
+                        <i class="fas fa-envelope"></i> 이메일 *
+                    </label>
+                    <input type="email" id="email" name="email" required placeholder="example@email.com">
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone">
+                        <i class="fas fa-phone"></i> 전화번호
+                    </label>
+                    <input type="tel" id="phone" name="phone" placeholder="010-1234-5678">
+                </div>
+                
+                <div class="form-group">
+                    <label for="company">
+                        <i class="fas fa-building"></i> 회사명 / 브랜드명
+                    </label>
+                    <input type="text" id="company" name="company" placeholder="예) 플랜씨랩 치과, ○○ 로컵">
+                </div>
+                
+                <div class="form-navigation">
+                    <button type="button" class="btn-next" onclick="nextStep()">다음 단계 <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+
+            <!-- 2단계: 업종/홈페이지 종류 -->
+            <div class="form-step" data-step="2">
+                <h2><i class="fas fa-briefcase"></i> 업종 & 홈페이지 종류</h2>
+                
+                <div class="form-group">
+                    <label for="industry">
+                        <i class="fas fa-industry"></i> 업종 선택 *
+                    </label>
+                    <select id="industry" name="industry" required>
+                        <option value="">업종을 선택하세요</option>
+                        <option value="의료/병원">의료/병원</option>
+                        <option value="교육/학원">교육/학원</option>
+                        <option value="식품/레스토랑">식품/레스토랑</option>
+                        <option value="패션/뷰티">패션/뷰티</option>
+                        <option value="IT/테크">IT/테크</option>
+                        <option value="부동산/인테리어">부동산/인테리어</option>
+                        <option value="예술/문화">예술/문화</option>
+                        <option value="기타">기타</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>
+                        <i class="fas fa-laptop-house"></i> 만들고 싶은 홈페이지 유형 *
+                    </label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="homepageType" value="브랜드 소개형">
+                            <span class="checkmark"></span>
+                            브랜드 소개형
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="homepageType" value="예약·상담 중심">
+                            <span class="checkmark"></span>
+                            예약·상담 중심
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="homepageType" value="상품 판매(결제)형">
+                            <span class="checkmark"></span>
+                            상품 판매(결제)형
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="homepageType" value="랜딩 페이지(광고용)">
+                            <span class="checkmark"></span>
+                            랜딩 페이지(광고용)
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="homepageType" value="티스토리/블로그형">
+                            <span class="checkmark"></span>
+                            티스토리/블로그형
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="pageScale">
+                        <i class="fas fa-sitemap"></i> 예상 페이지 수 *
+                    </label>
+                    <div class="radio-group">
+                        <label class="radio-item">
+                            <input type="radio" name="pageScale" value="5페이지 이하" required>
+                            <span class="radiomark"></span>
+                            5페이지 이하
+                        </label>
+                        <label class="radio-item">
+                            <input type="radio" name="pageScale" value="6~10페이지">
+                            <span class="radiomark"></span>
+                            6~10페이지
+                        </label>
+                        <label class="radio-item">
+                            <input type="radio" name="pageScale" value="11~20페이지">
+                            <span class="radiomark"></span>
+                            11~20페이지
+                        </label>
+                        <label class="radio-item">
+                            <input type="radio" name="pageScale" value="20페이지 이상">
+                            <span class="radiomark"></span>
+                            20페이지 이상
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="form-navigation">
+                    <button type="button" class="btn-prev" onclick="prevStep()"><i class="fas fa-arrow-left"></i> 이전</button>
+                    <button type="button" class="btn-next" onclick="nextStep()">다음 단계 <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+
+            <!-- 3단계: 디자인 스타일 -->
+            <div class="form-step" data-step="3">
+                <h2><i class="fas fa-palette"></i> 디자인 스타일 & 레퍼런스</h2>
+                
+                <div class="form-group">
+                    <label>
+                        <i class="fas fa-paint-brush"></i> 원하는 디자인 분위기 *
+                    </label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="designStyle" value="심플/미니멀">
+                            <span class="checkmark"></span>
+                            심플 / 미니멀
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="designStyle" value="고급/프리미엄">
+                            <span class="checkmark"></span>
+                            고급 / 프리미엄
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="designStyle" value="튀는 컬러/역동적">
+                            <span class="checkmark"></span>
+                            튀는 컬러 / 역동적
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="designStyle" value="차분하고 신뢰감 있는">
+                            <span class="checkmark"></span>
+                            차분하고 신뢰감 있는
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="designStyle" value="기타">
+                            <span class="checkmark"></span>
+                            기타
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="reference1">
+                        <i class="fas fa-link"></i> 참고하고 싶은 홈페이지 주소 (선택)
+                    </label>
+                    <input type="url" id="reference1" name="reference1" placeholder="https://예시사이트.com">
+                    <input type="url" id="reference2" name="reference2" placeholder="두 번째 참고사이트 (선택)">
+                    <input type="url" id="reference3" name="reference3" placeholder="세 번째 참고사이트 (선택)">
+                </div>
+                
+                <div class="form-navigation">
+                    <button type="button" class="btn-prev" onclick="prevStep()"><i class="fas fa-arrow-left"></i> 이전</button>
+                    <button type="button" class="btn-next" onclick="nextStep()">다음 단계 <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+
+            <!-- 4단계: 기능/일정/예산 -->
+            <div class="form-step" data-step="4">
+                <h2><i class="fas fa-cogs"></i> 필요한 기능 & 일정 · 예산</h2>
+                
+                <div class="form-group">
+                    <label>
+                        <i class="fas fa-tasks"></i> 필요한 기능 (필요한 항목을 선택하세요)
+                    </label>
+                    <div class="checkbox-group grid-2">
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="requiredFeatures" value="회원가입/로그인">
+                            <span class="checkmark"></span>
+                            회원가입 / 로그인
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="requiredFeatures" value="온라인 예약/상담 신청">
+                            <span class="checkmark"></span>
+                            온라인 예약 / 상담 신청
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="requiredFeatures" value="상품 결제(카드, 계좌 등)">
+                            <span class="checkmark"></span>
+                            상품 결제(카드, 계좌 등)
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="requiredFeatures" value="게시판/블로그">
+                            <span class="checkmark"></span>
+                            게시판 / 블로그
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="requiredFeatures" value="다국어 지원">
+                            <span class="checkmark"></span>
+                            다국어 지원
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="requiredFeatures" value="관리자 페이지(콘텐츠 직접 수정)">
+                            <span class="checkmark"></span>
+                            관리자 페이지
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="requiredFeatures" value="챗봇/AI 연동">
+                            <span class="checkmark"></span>
+                            챗봇 / AI 연동
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="requiredFeatures" value="기타">
+                            <span class="checkmark"></span>
+                            기타
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="timeline">
+                        <i class="fas fa-calendar-alt"></i> 희망 오픈 시기 *
+                    </label>
+                    <div class="radio-group">
+                        <label class="radio-item">
+                            <input type="radio" name="timeline" value="가능한 빨리" required>
+                            <span class="radiomark"></span>
+                            가능한 빨리
+                        </label>
+                        <label class="radio-item">
+                            <input type="radio" name="timeline" value="2주 이내">
+                            <span class="radiomark"></span>
+                            2주 이내
+                        </label>
+                        <label class="radio-item">
+                            <input type="radio" name="timeline" value="1개월 이내">
+                            <span class="radiomark"></span>
+                            1개월 이내
+                        </label>
+                        <label class="radio-item">
+                            <input type="radio" name="timeline" value="기타">
+                            <span class="radiomark"></span>
+                            기타
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="budget">
+                        <i class="fas fa-won-sign"></i> 예상 예산 범위
+                    </label>
+                    <input type="text" id="budget" name="budget" placeholder="예) 500-1000만원">
+                </div>
+                
+                <div class="form-navigation">
+                    <button type="button" class="btn-prev" onclick="prevStep()"><i class="fas fa-arrow-left"></i> 이전</button>
+                    <button type="button" class="btn-next" onclick="nextStep()">다음 단계 <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+
+            <!-- 5단계: 최종 확인 -->
+            <div class="form-step" data-step="5">
+                <h2><i class="fas fa-clipboard-check"></i> 프로젝트 설명 & 최종 확인</h2>
+                
+                <div class="form-group">
+                    <label for="projectDescription">
+                        <i class="fas fa-file-alt"></i> 현재 상황과 원하는 점을 자유롭게 적어주세요 *
+                    </label>
+                    <textarea id="projectDescription" name="projectDescription" rows="6" required placeholder="예: 병원 리브랜딩 중이라 새 홈페이지가 필요합니다. 예약 가능과 블로그, 병원 소개 페이지가 중요하고, 모바일에서 보기 좋게 만들어졌으면 합니다."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="marketingConsent" value="예">
+                        <span class="checkmark"></span>
+                        이메일로 마케팅 정보를 받겠습니다
+                    </label>
+                </div>
+                
+                <!-- 요약 정보 -->
+                <div class="summary-box">
+                    <h3><i class="fas fa-list-alt"></i> 요약 정보</h3>
+                    <div id="summaryContent">
+                        <!-- JavaScript로 채워짐 -->
+                    </div>
+                </div>
+                
+                <div class="form-navigation">
+                    <button type="button" class="btn-prev" onclick="prevStep()"><i class="fas fa-arrow-left"></i> 이전</button>
+                    <button type="submit" class="btn-submit">
+                        <i class="fas fa-paper-plane"></i> 견적 요청하기
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        <!-- 결과 메시지 -->
+        <div id="message" class="message"></div>
+
+        <!-- 푸터 -->
+        <footer class="footer">
+            <p><i class="fas fa-phone-alt"></i> 문의: 02-1234-5678</p>
+            <p><i class="fas fa-clock"></i> 상담 시간: 평일 09:00 - 18:00</p>
+            <p>© 2023 홈페이지제작전문. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        <?!= include('js'); ?>
+    </script>
+</body>
+</html>
