@@ -7,11 +7,15 @@ const totalSteps = 5;
 function changeStep(step) {
     // 현재 단계 숨기기
     document.querySelector(`.form-step[data-step="${currentStep}"]`).classList.remove('active');
-    document.querySelector(`.progress-step[data-step="${currentStep}"]`).classList.remove('active');
+    document.querySelectorAll(`.progress-step[data-step="${currentStep}"]`).forEach(el => {
+        el.classList.remove('active');
+    });
     
     // 새 단계 표시
     document.querySelector(`.form-step[data-step="${step}"]`).classList.add('active');
-    document.querySelector(`.progress-step[data-step="${step}"]`).classList.add('active');
+    document.querySelectorAll(`.progress-step[data-step="${step}"]`).forEach(el => {
+        el.classList.add('active');
+    });
     
     currentStep = step;
     
@@ -47,7 +51,7 @@ function validateCurrentStep() {
     
     for (const field of requiredFields) {
         if (!field.value.trim()) {
-            showMessage('필수 항목을 모두 입력해주세요.', 'error');
+            showMessage('❌ 필수 항목을 모두 입력해주세요.', 'error');
             field.focus();
             return false;
         }
@@ -56,7 +60,7 @@ function validateCurrentStep() {
         if (field.type === 'email' && field.value) {
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!emailRegex.test(field.value)) {
-                showMessage('유효한 이메일 주소를 입력해주세요.', 'error');
+                showMessage('❌ 유효한 이메일 주소를 입력해주세요.', 'error');
                 field.focus();
                 return false;
             }
@@ -64,21 +68,18 @@ function validateCurrentStep() {
     }
     
     // 체크박스 그룹 검사
-    const checkboxGroups = currentForm.querySelectorAll('.checkbox-group');
-    for (const group of checkboxGroups) {
-        const checkboxes = group.querySelectorAll('input[type="checkbox"]');
+    const checkboxGroups = currentForm.querySelectorAll('.fancy-card input[type="checkbox"]');
+    if (currentStep === 2) {
         let checked = false;
-        for (const checkbox of checkboxes) {
+        for (const checkbox of checkboxGroups) {
             if (checkbox.checked) {
                 checked = true;
                 break;
             }
         }
         
-        if (group.previousElementSibling && 
-            group.previousElementSibling.textContent.includes('*') && 
-            !checked) {
-            showMessage('필수 항목을 하나 이상 선택해주세요.', 'error');
+        if (!checked) {
+            showMessage('❌ 홈페이지 유형을 하나 이상 선택해주세요.', 'error');
             return false;
         }
     }
@@ -121,14 +122,18 @@ function updateSummary() {
         `;
     }
     
-    document.getElementById('summaryContent').innerHTML = summaryHTML;
+    // 여기에 요약 정보를 표시할 요소가 필요합니다
+    const summaryElement = document.getElementById('summaryContent');
+    if (summaryElement) {
+        summaryElement.innerHTML = summaryHTML;
+    }
 }
 
 // 메시지 표시
 function showMessage(text, type) {
     const messageDiv = document.getElementById('message');
     messageDiv.textContent = text;
-    messageDiv.className = `message ${type}`;
+    messageDiv.className = `message-fancy ${type}`;
     
     // 5초 후 메시지 숨기기
     setTimeout(() => {
@@ -170,10 +175,12 @@ document.getElementById('estimateForm').addEventListener('submit', function(e) {
     }
     
     // 제출 버튼 상태 변경
-    const submitBtn = form.querySelector('.btn-submit');
-    const originalText = submitBtn.innerHTML;
-    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 처리 중...';
-    submitBtn.disabled = true;
+    const submitBtn = form.querySelector('.btn-submit') || form.querySelector('.btn-next-fancy');
+    if (submitBtn) {
+        const originalText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 처리 중...';
+        submitBtn.disabled = true;
+    }
     
     // Google Apps Script로 데이터 전송
     google.script.run
@@ -183,24 +190,27 @@ document.getElementById('estimateForm').addEventListener('submit', function(e) {
                 form.reset();
                 changeStep(1);
                 
-                // 3초 후 리디렉션 또는 추가 작업
+                // 3초 후 축하 메시지
                 setTimeout(() => {
-                    // 홈페이지로 리디렉션 또는 모달 표시
-                    alert('견적 요청이 완료되었습니다. 빠른 시일 내에 연락드리겠습니다.');
+                    alert('🎉 견적 요청이 완료되었습니다!\n빠른 시일 내에 연락드리겠습니다.');
                 }, 2000);
             } else {
-                showMessage('오류: ' + response.message, 'error');
+                showMessage('❌ ' + response.message, 'error');
             }
             
-            submitBtn.innerHTML = originalText;
-            submitBtn.disabled = false;
+            if (submitBtn) {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
         })
         .withFailureHandler(function(error) {
-            showMessage('서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.', 'error');
+            showMessage('❌ 서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.', 'error');
             console.error('Submission error:', error);
             
-            submitBtn.innerHTML = originalText;
-            submitBtn.disabled = false;
+            if (submitBtn) {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
         })
         .submitEstimateRequest(data);
 });
@@ -220,6 +230,15 @@ document.addEventListener('DOMContentLoaded', function() {
         if (e.key === 'Enter' && e.target.type !== 'textarea' && e.target.type !== 'submit') {
             e.preventDefault();
         }
+    });
+    
+    // 카드 선택 애니메이션
+    const cards = document.querySelectorAll('.fancy-card');
+    cards.forEach(card => {
+        card.addEventListener('click', function() {
+            this.classList.add('clicked');
+            setTimeout(() => this.classList.remove('clicked'), 300);
+        });
     });
 });
 </script>
