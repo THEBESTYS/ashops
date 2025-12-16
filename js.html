@@ -1,0 +1,225 @@
+<script>
+// 현재 단계 추적
+let currentStep = 1;
+const totalSteps = 5;
+
+// 단계 변경 함수
+function changeStep(step) {
+    // 현재 단계 숨기기
+    document.querySelector(`.form-step[data-step="${currentStep}"]`).classList.remove('active');
+    document.querySelector(`.progress-step[data-step="${currentStep}"]`).classList.remove('active');
+    
+    // 새 단계 표시
+    document.querySelector(`.form-step[data-step="${step}"]`).classList.add('active');
+    document.querySelector(`.progress-step[data-step="${step}"]`).classList.add('active');
+    
+    currentStep = step;
+    
+    // 마지막 단계에서는 요약 정보 업데이트
+    if (step === totalSteps) {
+        updateSummary();
+    }
+}
+
+// 다음 단계로 이동
+function nextStep() {
+    // 현재 단계 유효성 검사
+    if (!validateCurrentStep()) {
+        return;
+    }
+    
+    if (currentStep < totalSteps) {
+        changeStep(currentStep + 1);
+    }
+}
+
+// 이전 단계로 이동
+function prevStep() {
+    if (currentStep > 1) {
+        changeStep(currentStep - 1);
+    }
+}
+
+// 현재 단계 유효성 검사
+function validateCurrentStep() {
+    const currentForm = document.querySelector(`.form-step[data-step="${currentStep}"]`);
+    const requiredFields = currentForm.querySelectorAll('[required]');
+    
+    for (const field of requiredFields) {
+        if (!field.value.trim()) {
+            showMessage('필수 항목을 모두 입력해주세요.', 'error');
+            field.focus();
+            return false;
+        }
+        
+        // 이메일 유효성 검사
+        if (field.type === 'email' && field.value) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(field.value)) {
+                showMessage('유효한 이메일 주소를 입력해주세요.', 'error');
+                field.focus();
+                return false;
+            }
+        }
+    }
+    
+    // 체크박스 그룹 검사
+    const checkboxGroups = currentForm.querySelectorAll('.checkbox-group');
+    for (const group of checkboxGroups) {
+        const checkboxes = group.querySelectorAll('input[type="checkbox"]');
+        let checked = false;
+        for (const checkbox of checkboxes) {
+            if (checkbox.checked) {
+                checked = true;
+                break;
+            }
+        }
+        
+        if (group.previousElementSibling && 
+            group.previousElementSibling.textContent.includes('*') && 
+            !checked) {
+            showMessage('필수 항목을 하나 이상 선택해주세요.', 'error');
+            return false;
+        }
+    }
+    
+    return true;
+}
+
+// 요약 정보 업데이트
+function updateSummary() {
+    const form = document.getElementById('estimateForm');
+    const formData = new FormData(form);
+    
+    const summary = {
+        '이름': formData.get('name') || '미입력',
+        '이메일': formData.get('email') || '미입력',
+        '전화번호': formData.get('phone') || '미입력',
+        '회사/브랜드': formData.get('company') || '미입력',
+        '업종': formData.get('industry') || '미입력',
+        '홈페이지 유형': Array.from(formData.getAll('homepageType')).join(', ') || '미입력',
+        '페이지 규모': formData.get('pageScale') || '미입력',
+        '디자인 스타일': Array.from(formData.getAll('designStyle')).join(', ') || '미입력',
+        '참고 사이트': [
+            formData.get('reference1'),
+            formData.get('reference2'),
+            formData.get('reference3')
+        ].filter(Boolean).join(', ') || '없음',
+        '필요 기능': Array.from(formData.getAll('requiredFeatures')).join(', ') || '없음',
+        '희망 오픈': formData.get('timeline') || '미입력',
+        '예산 범위': formData.get('budget') || '미입력',
+        '프로젝트 설명': formData.get('projectDescription')?.substring(0, 100) + (formData.get('projectDescription')?.length > 100 ? '...' : '') || '미입력'
+    };
+    
+    let summaryHTML = '';
+    for (const [key, value] of Object.entries(summary)) {
+        summaryHTML += `
+            <div class="summary-item">
+                <span class="summary-label">${key}:</span>
+                <span class="summary-value">${value}</span>
+            </div>
+        `;
+    }
+    
+    document.getElementById('summaryContent').innerHTML = summaryHTML;
+}
+
+// 메시지 표시
+function showMessage(text, type) {
+    const messageDiv = document.getElementById('message');
+    messageDiv.textContent = text;
+    messageDiv.className = `message ${type}`;
+    
+    // 5초 후 메시지 숨기기
+    setTimeout(() => {
+        messageDiv.style.display = 'none';
+    }, 5000);
+}
+
+// 폼 제출 처리
+document.getElementById('estimateForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    if (!validateCurrentStep()) {
+        return;
+    }
+    
+    // 폼 데이터 수집
+    const form = e.target;
+    const formData = new FormData(form);
+    
+    // 객체로 변환
+    const data = {};
+    for (const [key, value] of formData.entries()) {
+        if (data[key]) {
+            if (Array.isArray(data[key])) {
+                data[key].push(value);
+            } else {
+                data[key] = [data[key], value];
+            }
+        } else {
+            data[key] = value;
+        }
+    }
+    
+    // 배열이 아닌 것은 단일 값으로 변환
+    for (const key in data) {
+        if (Array.isArray(data[key]) && data[key].length === 1) {
+            data[key] = data[key][0];
+        }
+    }
+    
+    // 제출 버튼 상태 변경
+    const submitBtn = form.querySelector('.btn-submit');
+    const originalText = submitBtn.innerHTML;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 처리 중...';
+    submitBtn.disabled = true;
+    
+    // Google Apps Script로 데이터 전송
+    google.script.run
+        .withSuccessHandler(function(response) {
+            if (response.success) {
+                showMessage(response.message, 'success');
+                form.reset();
+                changeStep(1);
+                
+                // 3초 후 리디렉션 또는 추가 작업
+                setTimeout(() => {
+                    // 홈페이지로 리디렉션 또는 모달 표시
+                    alert('견적 요청이 완료되었습니다. 빠른 시일 내에 연락드리겠습니다.');
+                }, 2000);
+            } else {
+                showMessage('오류: ' + response.message, 'error');
+            }
+            
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+        })
+        .withFailureHandler(function(error) {
+            showMessage('서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.', 'error');
+            console.error('Submission error:', error);
+            
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+        })
+        .submitEstimateRequest(data);
+});
+
+// 페이지 로드 시 초기화
+document.addEventListener('DOMContentLoaded', function() {
+    // URL에서 step 파라미터 확인
+    const urlParams = new URLSearchParams(window.location.search);
+    const stepParam = urlParams.get('step');
+    
+    if (stepParam && stepParam >= 1 && stepParam <= totalSteps) {
+        changeStep(parseInt(stepParam));
+    }
+    
+    // 엔터키로 다음 단계 이동 방지
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && e.target.type !== 'textarea' && e.target.type !== 'submit') {
+            e.preventDefault();
+        }
+    });
+});
+</script>
