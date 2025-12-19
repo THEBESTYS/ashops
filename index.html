@@ -1,396 +1,190 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎨 팬시 홈페이지 견적 상담 - 무료 디자인 컨설팅</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Poppins:wght@300;400;500;600;700&family=Quicksand:wght@300;400;500&display=swap" rel="stylesheet">
-    <style>
-        <?!= include('css'); ?>
-    </style>
-</head>
-<body>
-    <!-- 배경 디자인 요소들 -->
-    <div class="floating-shapes">
-        <div class="shape shape-1"></div>
-        <div class="shape shape-2"></div>
-        <div class="shape shape-3"></div>
-        <div class="shape shape-4"></div>
-        <div class="shape shape-5"></div>
-    </div>
+<style>
+  .k-culture-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: {{property.gap}}px;
+    padding: {{property.paddingVertical}}px {{property.paddingHorizontal}}px;
+    background: {{property.backgroundColor}};
+  }
 
-    <div class="container">
-        <!-- 헤더 섹션 -->
-        <header class="header">
-            <div class="logo-wrapper">
-                <div class="logo">
-                    <i class="fas fa-paint-brush"></i>
-                    <span class="logo-text">팬시디자인<span class="logo-accent">.</span></span>
-                </div>
-                <div class="tagline">예술적 감각이 살아있는 홈페이지 제작</div>
-            </div>
-            
-            <div class="hero-section">
-                <h1 class="main-title">
-                    <span class="title-line-1">당신만의 특별한</span>
-                    <span class="title-line-2">🎨 <span class="highlight">팬시 홈페이지</span>를 디자인합니다</span>
-                </h1>
-                <p class="subtitle">아티스트와 개발자가 함께 만드는 예술적 웹사이트</p>
-                
-                <div class="decoration">
-                    <i class="fas fa-star deco-icon"></i>
-                    <i class="fas fa-heart deco-icon"></i>
-                    <i class="fas fa-circle deco-icon"></i>
-                </div>
-            </div>
-        </header>
+  .k-culture-card {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    border-radius: {{property.borderRadius}}px;
+    cursor: pointer;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
 
-        <!-- 진행 상태 표시 -->
-        <div class="progress-container">
-            <div class="progress-bar-fancy">
-                <div class="progress-step active" data-step="1">
-                    <div class="step-bubble">
-                        <span class="step-number">1</span>
-                        <span class="step-icon"><i class="fas fa-user"></i></span>
-                    </div>
-                    <span class="step-label">기본정보</span>
-                </div>
-                <div class="progress-connector">
-                    <div class="connector-line"></div>
-                    <i class="fas fa-sparkle"></i>
-                </div>
-                
-                <div class="progress-step" data-step="2">
-                    <div class="step-bubble">
-                        <span class="step-number">2</span>
-                        <span class="step-icon"><i class="fas fa-briefcase"></i></span>
-                    </div>
-                    <span class="step-label">업종/유형</span>
-                </div>
-                <div class="progress-connector">
-                    <div class="connector-line"></div>
-                    <i class="fas fa-sparkle"></i>
-                </div>
-                
-                <div class="progress-step" data-step="3">
-                    <div class="step-bubble">
-                        <span class="step-number">3</span>
-                        <span class="step-icon"><i class="fas fa-palette"></i></span>
-                    </div>
-                    <span class="step-label">디자인</span>
-                </div>
-                <div class="progress-connector">
-                    <div class="connector-line"></div>
-                    <i class="fas fa-sparkle"></i>
-                </div>
-                
-                <div class="progress-step" data-step="4">
-                    <div class="step-bubble">
-                        <span class="step-number">4</span>
-                        <span class="step-icon"><i class="fas fa-cogs"></i></span>
-                    </div>
-                    <span class="step-label">기능/일정</span>
-                </div>
-                <div class="progress-connector">
-                    <div class="connector-line"></div>
-                    <i class="fas fa-sparkle"></i>
-                </div>
-                
-                <div class="progress-step" data-step="5">
-                    <div class="step-bubble">
-                        <span class="step-number">5</span>
-                        <span class="step-icon"><i class="fas fa-check-circle"></i></span>
-                    </div>
-                    <span class="step-label">확인/제출</span>
-                </div>
-            </div>
+  /* 데스크톱 호버 효과 */
+  @media (hover: hover) and (pointer: fine) {
+    .k-culture-card:hover {
+      transform: scale(1.05) rotate(5deg);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+    }
+
+    .k-culture-card:hover img {
+      transform: scale(1.1);
+    }
+
+    .k-culture-card:hover .k-culture-overlay {
+      transform: translateY(-8px);
+    }
+
+    .k-culture-card:hover .k-culture-description {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* 터치 디바이스 활성 효과 */
+  .k-culture-card.active {
+    transform: scale(1.05) rotate(5deg);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+  }
+
+  .k-culture-card.active img {
+    transform: scale(1.1);
+  }
+
+  .k-culture-card.active .k-culture-overlay {
+    transform: translateY(-8px);
+  }
+
+  .k-culture-card.active .k-culture-description {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .k-culture-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+  }
+
+  .k-culture-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%);
+    padding: {{property.overlayPadding}}px;
+    transform: translateY(0);
+    transition: transform 0.3s ease;
+  }
+
+  .k-culture-title {
+    color: {{property.titleColor}};
+    font-size: {{property.titleFontSize}}px;
+    font-weight: var(--font-weight-heading);
+    font-family: var(--font-family-heading);
+    margin: 0 0 8px 0;
+    letter-spacing: 2px;
+  }
+
+  .k-culture-description {
+    color: {{property.descriptionColor}};
+    font-size: {{property.descriptionFontSize}}px;
+    font-weight: var(--font-weight-body);
+    font-family: var(--font-family-body);
+    margin: 0;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+  }
+
+  /* 모바일 반응형 */
+  @media (max-width: 768px) {
+    .k-culture-grid {
+      grid-template-columns: 1fr;
+      gap: {{property.gapMobile}}px;
+      padding: {{property.paddingVerticalMobile}}px {{property.paddingHorizontalMobile}}px;
+    }
+
+    .k-culture-title {
+      font-size: {{property.titleFontSizeMobile}}px;
+    }
+
+    .k-culture-description {
+      font-size: {{property.descriptionFontSizeMobile}}px;
+    }
+
+    .k-culture-overlay {
+      padding: {{property.overlayPaddingMobile}}px;
+    }
+  }
+</style>
+
+<template>
+  <div class="k-culture-grid">
+    {{#each property.items}}
+      <div class="k-culture-card" data-index="{{@index}}">
+        <img src="{{image}}" alt="{{title}}" loading="lazy" onerror="this.src='https://ss3-prod-static-files.s3.ap-northeast-2.amazonaws.com/block-image-library/lifestyle/image1.jpg'">
+        <div class="k-culture-overlay">
+          <h3 class="k-culture-title">{{title}}</h3>
+          <p class="k-culture-description">{{description}}</p>
         </div>
+      </div>
+    {{/each}}
+  </div>
+</template>
 
-        <!-- 메인 폼 -->
-        <form id="estimateForm" class="fancy-form">
-            <!-- 1단계: 기본 정보 -->
-            <div class="form-step active" data-step="1">
-                <div class="step-header">
-                    <div class="step-title-wrapper">
-                        <h2 class="step-title">
-                            <i class="fas fa-user-circle step-title-icon"></i>
-                            기본 정보
-                        </h2>
-                        <p class="step-description">당신에 대해 알려주세요</p>
-                    </div>
-                    <div class="step-number-display">Step 1/5</div>
-                </div>
-                
-                <div class="form-content">
-                    <div class="input-group fancy-input">
-                        <label for="name" class="fancy-label">
-                            <i class="fas fa-user"></i>
-                            <span class="label-text">이름</span>
-                            <span class="required-star">*</span>
-                        </label>
-                        <div class="input-wrapper">
-                            <input type="text" id="name" name="name" required 
-                                   placeholder="홍길동"
-                                   class="fancy-input-field">
-                            <i class="fas fa-user input-icon"></i>
-                        </div>
-                    </div>
-                    
-                    <div class="input-group fancy-input">
-                        <label for="email" class="fancy-label">
-                            <i class="fas fa-envelope"></i>
-                            <span class="label-text">이메일</span>
-                            <span class="required-star">*</span>
-                        </label>
-                        <div class="input-wrapper">
-                            <input type="email" id="email" name="email" required 
-                                   placeholder="example@gmail.com"
-                                   class="fancy-input-field">
-                            <i class="fas fa-envelope input-icon"></i>
-                        </div>
-                    </div>
-                    
-                    <div class="input-group fancy-input">
-                        <label for="phone" class="fancy-label">
-                            <i class="fas fa-phone"></i>
-                            <span class="label-text">전화번호</span>
-                        </label>
-                        <div class="input-wrapper">
-                            <input type="tel" id="phone" name="phone" 
-                                   placeholder="010-1234-5678"
-                                   class="fancy-input-field">
-                            <i class="fas fa-phone input-icon"></i>
-                        </div>
-                    </div>
-                    
-                    <div class="input-group fancy-input">
-                        <label for="company" class="fancy-label">
-                            <i class="fas fa-building"></i>
-                            <span class="label-text">회사명 / 브랜드명</span>
-                        </label>
-                        <div class="input-wrapper">
-                            <input type="text" id="company" name="company" 
-                                   placeholder="예) 플랜씨랩 치과, ○○ 로컵"
-                                   class="fancy-input-field">
-                            <i class="fas fa-store input-icon"></i>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="form-navigation">
-                    <button type="button" class="btn-next-fancy" onclick="nextStep()">
-                        다음 단계
-                        <i class="fas fa-arrow-right btn-icon"></i>
-                        <span class="btn-sparkle">
-                            <i class="fas fa-sparkle"></i>
-                        </span>
-                    </button>
-                </div>
-            </div>
+<script>
+  const container = bm.container;
+  const context = bm.context;
 
-            <!-- 2단계: 업종/홈페이지 종류 -->
-            <div class="form-step" data-step="2">
-                <div class="step-header">
-                    <div class="step-title-wrapper">
-                        <h2 class="step-title">
-                            <i class="fas fa-briefcase step-title-icon"></i>
-                            업종 & 홈페이지 종류
-                        </h2>
-                        <p class="step-description">어떤 홈페이지를 원하시나요?</p>
-                    </div>
-                    <div class="step-number-display">Step 2/5</div>
-                </div>
-                
-                <div class="form-content">
-                    <!-- 업종 선택 -->
-                    <div class="input-group fancy-select">
-                        <label class="fancy-label">
-                            <i class="fas fa-industry"></i>
-                            <span class="label-text">업종 선택</span>
-                            <span class="required-star">*</span>
-                        </label>
-                        <div class="select-wrapper">
-                            <select id="industry" name="industry" required class="fancy-select-field">
-                                <option value="">업종을 선택하세요</option>
-                                <option value="의료/병원">🏥 의료/병원</option>
-                                <option value="교육/학원">📚 교육/학원</option>
-                                <option value="식품/레스토랑">🍽️ 식품/레스토랑</option>
-                                <option value="패션/뷰티">👗 패션/뷰티</option>
-                                <option value="IT/테크">💻 IT/테크</option>
-                                <option value="부동산/인테리어">🏠 부동산/인테리어</option>
-                                <option value="예술/문화">🎨 예술/문화</option>
-                                <option value="기타">✨ 기타</option>
-                            </select>
-                            <i class="fas fa-chevron-down select-icon"></i>
-                        </div>
-                    </div>
-                    
-                    <!-- 홈페이지 유형 -->
-                    <div class="card-section">
-                        <h3 class="card-section-title">
-                            <i class="fas fa-laptop-house"></i>
-                            만들고 싶은 홈페이지 유형
-                            <span class="required-star">*</span>
-                        </h3>
-                        <div class="card-grid">
-                            <label class="fancy-card">
-                                <input type="checkbox" name="homepageType" value="브랜드 소개형">
-                                <div class="card-content">
-                                    <div class="card-icon">
-                                        <i class="fas fa-star"></i>
-                                    </div>
-                                    <h4 class="card-title">브랜드 소개형</h4>
-                                    <p class="card-description">브랜드 아이덴티티를 강조한 웹사이트</p>
-                                </div>
-                            </label>
-                            
-                            <label class="fancy-card">
-                                <input type="checkbox" name="homepageType" value="예약·상담 중심">
-                                <div class="card-content">
-                                    <div class="card-icon">
-                                        <i class="fas fa-calendar-check"></i>
-                                    </div>
-                                    <h4 class="card-title">예약·상담 중심</h4>
-                                    <p class="card-description">온라인 예약 시스템이 필요한 사이트</p>
-                                </div>
-                            </label>
-                            
-                            <label class="fancy-card">
-                                <input type="checkbox" name="homepageType" value="상품 판매(결제)형">
-                                <div class="card-content">
-                                    <div class="card-icon">
-                                        <i class="fas fa-shopping-cart"></i>
-                                    </div>
-                                    <h4 class="card-title">상품 판매형</h4>
-                                    <p class="card-description">결제 시스템을 갖춘 쇼핑몰</p>
-                                </div>
-                            </label>
-                            
-                            <label class="fancy-card">
-                                <input type="checkbox" name="homepageType" value="랜딩 페이지(광고용)">
-                                <div class="card-content">
-                                    <div class="card-icon">
-                                        <i class="fas fa-bullhorn"></i>
-                                    </div>
-                                    <h4 class="card-title">랜딩 페이지</h4>
-                                    <p class="card-description">광고용 한 페이지 웹사이트</p>
-                                </div>
-                            </label>
-                            
-                            <label class="fancy-card">
-                                <input type="checkbox" name="homepageType" value="티스토리/블로그형">
-                                <div class="card-content">
-                                    <div class="card-icon">
-                                        <i class="fas fa-blog"></i>
-                                    </div>
-                                    <h4 class="card-title">블로그형</h4>
-                                    <p class="card-description">콘텐츠 중심의 웹사이트</p>
-                                </div>
-                            </label>
-                        </div>
-                    </div>
-                    
-                    <!-- 페이지 수 -->
-                    <div class="bubble-section">
-                        <h3 class="bubble-section-title">
-                            <i class="fas fa-sitemap"></i>
-                            예상 페이지 수
-                            <span class="required-star">*</span>
-                        </h3>
-                        <div class="bubble-group">
-                            <label class="bubble-option">
-                                <input type="radio" name="pageScale" value="5페이지 이하" required>
-                                <div class="bubble-content">
-                                    <span class="bubble-text">5페이지 이하</span>
-                                </div>
-                            </label>
-                            
-                            <label class="bubble-option">
-                                <input type="radio" name="pageScale" value="6~10페이지">
-                                <div class="bubble-content">
-                                    <span class="bubble-text">6~10페이지</span>
-                                </div>
-                            </label>
-                            
-                            <label class="bubble-option">
-                                <input type="radio" name="pageScale" value="11~20페이지">
-                                <div class="bubble-content">
-                                    <span class="bubble-text">11~20페이지</span>
-                                </div>
-                            </label>
-                            
-                            <label class="bubble-option">
-                                <input type="radio" name="pageScale" value="20페이지 이상">
-                                <div class="bubble-content">
-                                    <span class="bubble-text">20페이지 이상</span>
-                                </div>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="form-navigation">
-                    <button type="button" class="btn-prev-fancy" onclick="prevStep()">
-                        <i class="fas fa-arrow-left btn-icon"></i>
-                        이전
-                    </button>
-                    <button type="button" class="btn-next-fancy" onclick="nextStep()">
-                        다음 단계
-                        <i class="fas fa-arrow-right btn-icon"></i>
-                        <span class="btn-sparkle">
-                            <i class="fas fa-sparkle"></i>
-                        </span>
-                    </button>
-                </div>
-            </div>
+  let activeCard = null;
 
-            <!-- 3-5단계는 동일한 패턴으로 계속됩니다. 공간 절약을 위해 생략 -->
-            <!-- 실제 구현에서는 3,4,5단계도 동일한 스타일로 구현 -->
-            
-        </form>
+  // 카드 클릭/터치 이벤트 처리
+  container.addEventListener('click', (e) => {
+    e.preventDefault();
+    
+    const card = e.target.closest('.k-culture-card');
+    if (card) {
+      const index = parseInt(card.getAttribute('data-index'));
+      const item = context.property.items[index];
+      
+      // 링크가 설정된 경우 페이지 이동
+      if (item.link && item.link.value) {
+        window.location.href = item.link.value;
+      }
+    }
+  }, true);
 
-        <!-- 결과 메시지 -->
-        <div id="message" class="message-fancy"></div>
+  // 터치 디바이스용 인터랙션
+  container.addEventListener('touchstart', (e) => {
+    const card = e.target.closest('.k-culture-card');
+    if (card) {
+      // 이전 활성 카드 제거
+      if (activeCard && activeCard !== card) {
+        activeCard.classList.remove('active');
+      }
+      
+      // 현재 카드 활성화
+      card.classList.add('active');
+      activeCard = card;
+    }
+  }, { passive: true });
 
-        <!-- 푸터 -->
-        <footer class="footer-fancy">
-            <div class="footer-content">
-                <div class="footer-brand">
-                    <div class="footer-logo">
-                        <i class="fas fa-paint-brush"></i>
-                        <span>팬시디자인</span>
-                    </div>
-                    <p class="footer-tagline">예술과 기술의 완벽한 조화</p>
-                </div>
-                
-                <div class="footer-info">
-                    <p><i class="fas fa-phone"></i> 02-1234-5678</p>
-                    <p><i class="fas fa-clock"></i> 평일 09:00 - 18:00</p>
-                    <p><i class="fas fa-envelope"></i> hello@fancydesign.kr</p>
-                </div>
-                
-                <div class="footer-social">
-                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
-                    <a href="#" class="social-icon"><i class="fab fa-facebook"></i></a>
-                    <a href="#" class="social-icon"><i class="fab fa-pinterest"></i></a>
-                    <a href="#" class="social-icon"><i class="fab fa-behance"></i></a>
-                </div>
-            </div>
-            
-            <div class="footer-bottom">
-                <p>© 2023 FancyDesign. 모든 디자인은 저작권 보호를 받습니다.</p>
-                <div class="footer-credits">
-                    <i class="fas fa-heart"></i>
-                    <span>Made with love</span>
-                </div>
-            </div>
-        </footer>
-    </div>
+  // 터치 종료 시 효과 제거 (딜레이 추가)
+  container.addEventListener('touchend', (e) => {
+    const card = e.target.closest('.k-culture-card');
+    if (card) {
+      setTimeout(() => {
+        card.classList.remove('active');
+        activeCard = null;
+      }, 300);
+    }
+  }, { passive: true });
 
-    <!-- JavaScript -->
-    <script>
-        <?!= include('js'); ?>
-    </script>
-</body>
-</html>
+  // 터치 취소 시 효과 제거
+  container.addEventListener('touchcancel', (e) => {
+    const card = e.target.closest('.k-culture-card');
+    if (card) {
+      card.classList.remove('active');
+      activeCard = null;
+    }
+  }, { passive: true });
+</script>
