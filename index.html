@@ -1,190 +1,177 @@
-<style>
-  .k-culture-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: {{property.gap}}px;
-    padding: {{property.paddingVertical}}px {{property.paddingHorizontal}}px;
-    background: {{property.backgroundColor}};
-  }
-
-  .k-culture-card {
-    position: relative;
-    aspect-ratio: 1 / 1;
-    overflow: hidden;
-    border-radius: {{property.borderRadius}}px;
-    cursor: pointer;
-    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s ease;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  }
-
-  /* 데스크톱 호버 효과 */
-  @media (hover: hover) and (pointer: fine) {
-    .k-culture-card:hover {
-      transform: scale(1.05) rotate(5deg);
-      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
-    }
-
-    .k-culture-card:hover img {
-      transform: scale(1.1);
-    }
-
-    .k-culture-card:hover .k-culture-overlay {
-      transform: translateY(-8px);
-    }
-
-    .k-culture-card:hover .k-culture-description {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  /* 터치 디바이스 활성 효과 */
-  .k-culture-card.active {
-    transform: scale(1.05) rotate(5deg);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
-  }
-
-  .k-culture-card.active img {
-    transform: scale(1.1);
-  }
-
-  .k-culture-card.active .k-culture-overlay {
-    transform: translateY(-8px);
-  }
-
-  .k-culture-card.active .k-culture-description {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .k-culture-card img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.6s ease;
-  }
-
-  .k-culture-overlay {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%);
-    padding: {{property.overlayPadding}}px;
-    transform: translateY(0);
-    transition: transform 0.3s ease;
-  }
-
-  .k-culture-title {
-    color: {{property.titleColor}};
-    font-size: {{property.titleFontSize}}px;
-    font-weight: var(--font-weight-heading);
-    font-family: var(--font-family-heading);
-    margin: 0 0 8px 0;
-    letter-spacing: 2px;
-  }
-
-  .k-culture-description {
-    color: {{property.descriptionColor}};
-    font-size: {{property.descriptionFontSize}}px;
-    font-weight: var(--font-weight-body);
-    font-family: var(--font-family-body);
-    margin: 0;
-    opacity: 0;
-    transform: translateY(10px);
-    transition: all 0.3s ease;
-  }
-
-  /* 모바일 반응형 */
-  @media (max-width: 768px) {
-    .k-culture-grid {
-      grid-template-columns: 1fr;
-      gap: {{property.gapMobile}}px;
-      padding: {{property.paddingVerticalMobile}}px {{property.paddingHorizontalMobile}}px;
-    }
-
-    .k-culture-title {
-      font-size: {{property.titleFontSizeMobile}}px;
-    }
-
-    .k-culture-description {
-      font-size: {{property.descriptionFontSizeMobile}}px;
-    }
-
-    .k-culture-overlay {
-      padding: {{property.overlayPaddingMobile}}px;
-    }
-  }
-</style>
-
-<template>
-  <div class="k-culture-grid">
-    {{#each property.items}}
-      <div class="k-culture-card" data-index="{{@index}}">
-        <img src="{{image}}" alt="{{title}}" loading="lazy" onerror="this.src='https://ss3-prod-static-files.s3.ap-northeast-2.amazonaws.com/block-image-library/lifestyle/image1.jpg'">
-        <div class="k-culture-overlay">
-          <h3 class="k-culture-title">{{title}}</h3>
-          <p class="k-culture-description">{{description}}</p>
-        </div>
-      </div>
-    {{/each}}
-  </div>
-</template>
-
-<script>
-  const container = bm.container;
-  const context = bm.context;
-
-  let activeCard = null;
-
-  // 카드 클릭/터치 이벤트 처리
-  container.addEventListener('click', (e) => {
-    e.preventDefault();
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ashop - 브랜딩을 위한 전략적 홈페이지</title>
     
-    const card = e.target.closest('.k-culture-card');
-    if (card) {
-      const index = parseInt(card.getAttribute('data-index'));
-      const item = context.property.items[index];
-      
-      // 링크가 설정된 경우 페이지 이동
-      if (item.link && item.link.value) {
-        window.location.href = item.link.value;
-      }
-    }
-  }, true);
+    <!-- 폰트 -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    
+    <!-- 아이콘 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    
+    <!-- 파비콘 -->
+    <link rel="icon" type="image/svg+xml" href="assets/ashop-logo.svg">
+</head>
+<body>
+    <!-- 헤더 -->
+    <header class="main-header">
+        <div class="container">
+            <nav class="navbar">
+                <a href="/" class="logo">
+                    <span class="logo-mark">a</span>
+                    <span class="logo-text">shop</span>
+                </a>
+                
+                <div class="nav-menu">
+                    <a href="#philosophy" class="nav-link">철학</a>
+                    <a href="#services" class="nav-link">서비스</a>
+                    <a href="#process" class="nav-link">프로세스</a>
+                    <a href="https://thebestys.github.io/as/" class="estimate">무료 견적</a>         
+                </div>
+                
+                <button class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
+        </div>
+    </header>
 
-  // 터치 디바이스용 인터랙션
-  container.addEventListener('touchstart', (e) => {
-    const card = e.target.closest('.k-culture-card');
-    if (card) {
-      // 이전 활성 카드 제거
-      if (activeCard && activeCard !== card) {
-        activeCard.classList.remove('active');
-      }
-      
-      // 현재 카드 활성화
-      card.classList.add('active');
-      activeCard = card;
-    }
-  }, { passive: true });
+    <!-- 히어로 섹션 -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">Building Brands<br><span class="highlight">That Matter</span></h1>
+                <p class="hero-subtitle">
+                    홈페이지 제작이 아닌, <strong>브랜딩을 위한 홈페이지</strong>를 만듭니다.<br>
+                    마케팅과 영업을 이끌어내는 전략적 디지털 존재감을 설계합니다.
+                </p>
+                <div class="hero-buttons"> 
+                    <a href="https://thebestys.github.io/as/" class="btn-primary" target="_blank" rel="noopener noreferrer">
+                        <i class="fas fa-file-alt"></i> 무료 견적 신청                    
+                    </a>
+                    <a href="#philosophy" class="btn-secondary">
+                        <i class="fas fa-play-circle"></i> 우리의 철학 보기
+                    </a>
+                </div>
+            </div>
+            
+            <div class="hero-visual">
+                <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" 
+                     alt="브랜드 전략 워크샵" class="hero-image" loading="lazy">
+            </div>
+        </div>
+    </section>
 
-  // 터치 종료 시 효과 제거 (딜레이 추가)
-  container.addEventListener('touchend', (e) => {
-    const card = e.target.closest('.k-culture-card');
-    if (card) {
-      setTimeout(() => {
-        card.classList.remove('active');
-        activeCard = null;
-      }, 300);
-    }
-  }, { passive: true });
+    <!-- 브랜드 철학 섹션 -->
+    <section class="philosophy-section" id="philosophy">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">a의 철학, shop의 전략</h2>
+                <p class="section-subtitle">ashop은 단순한 웹사이트 제작자가 아닌, 디지털 브랜드 아키텍트입니다.</p>
+            </div>
+            
+            <div class="philosophy-content">
+                <div class="philosophy-card">
+                    <div class="philosophy-icon">
+                        <span class="letter-a">a</span>
+                    </div>
+                    <h3>Aesthetic<br>미학</h3>
+                    <p>단순한 디자인이 아닌, 브랜드의 핵심 가치를 시각적 언어로 전환하는 미학적 해석.</p>
+                </div>
+                
+                <div class="philosophy-card">
+                    <div class="philosophy-icon">
+                        <span class="letter-s">s</span>
+                    </div>
+                    <h3>Strategic<br>전략적</h3>
+                    <p>비즈니스 목표에 맞춘 체계적 접근. 모든 픽셀에 전략적 의도를 담습니다.</p>
+                </div>
+                
+                <div class="philosophy-card">
+                    <div class="philosophy-icon">
+                        <span class="letter-h">h</span>
+                    </div>
+                    <h3>Holistic<br>종합적</h3>
+                    <p>브랜드 아이덴티티부터 사용자 경험까지, 분절되지 않은 통합적 솔루션.</p>
+                </div>
+                
+                <div class="philosophy-card">
+                    <div class="philosophy-icon">
+                        <span class="letter-o">o</span>
+                    </div>
+                    <h3>On-line<br>온라인</h3>
+                    <p>디지털 공간에서 브랜드의 존재감을 극대화하고 온라인 비즈니스를 성장.</p>
+                </div> 
+                
+                <div class="philosophy-card">
+                    <div class="philosophy-icon">
+                        <span class="letter-p">p</span>
+                    </div>
+                    <h3>Presence<br>존재감</h3>
+                    <p>단순한 온라인 공간이 아닌, 고객의 마음에 각인되는 지속 가능한 디지털 존재감.</p>
+                </div>
+            </div>
+            
+            <div class="philosophy-statement">
+                <p class="statement">
+                    "ashop은 <strong>진정성 있는 디지털 존재감을 종합적으로 구축하는 전략적 미학 작업실</strong>입니다.<br>
+                    우리는 단순히 '홈페이지를 만드는' 것이 아니라, 당신의 브랜드가 시장에서 <strong>기억되고, 사랑받고, 성장할 수 있는 기반</strong>을 설계합니다."
+                </p>
+            </div>
+        </div>
+    </section>
 
-  // 터치 취소 시 효과 제거
-  container.addEventListener('touchcancel', (e) => {
-    const card = e.target.closest('.k-culture-card');
-    if (card) {
-      card.classList.remove('active');
-      activeCard = null;
-    }
-  }, { passive: true });
-</script>
+    <!-- 푸터 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <a href="/" class="footer-logo">ashop</a>
+                    <p class="footer-tagline">Architecting Digital Presence</p>
+                    <p class="footer-philosophy">진정성 있는 디지털 존재감을 종합적으로 구축하는 전략적 미학 작업실</p>
+                </div>
+                
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>문의</h4>
+                        <p><i class="fas fa-envelope"></i> contact@ashop.design</p>
+                        <p><i class="fas fa-phone"></i> 02-1234-5678</p>
+                    </div>
+                    
+                    <div class="footer-column">
+                        <h4>서비스</h4>
+                        <a href="#philosophy">브랜드 철학</a>
+                        <a href="#services">서비스 소개</a>
+                        <a href="#process">제작 프로세스</a>
+                        <a href="#estimate">견적 신청</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>© 2024 ashop. All rights reserved.</p>
+                <div class="footer-legal">
+                    <a href="#privacy">개인정보처리방침</a>
+                    <a href="#terms">이용약관</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- JavaScript -->
+    <script src="js/main.js"></script>
+    <script src="js/form-handler.js"></script>
+    
+    <!-- Google Sheets 연동 설정 -->
+    <script>
+        // Google Apps Script 배포 URL (제공된 URL로 미리 설정됨)
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxKeEtnfDPSuZunaw8nYVBWA9WnDeEwHi_G4zu6g_KlhLCisq8kmAiZeVs1l4N4yhS6/exec';
+    </script>
+</body>
+</html>
