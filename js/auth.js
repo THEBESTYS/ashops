@@ -1,4 +1,4 @@
-// Auth Manager
+// Auth Manager 개선
 class AuthManager {
     constructor() {
         this.currentUser = null;
@@ -20,6 +20,12 @@ class AuthManager {
         
         // 로그아웃 이벤트
         this.initLogout();
+        
+        // 취소 버튼 이벤트 (추가)
+        this.initCancelButtons();
+        
+        // 로그인 전환 링크 이벤트 (추가)
+        this.initLoginSwitch();
     }
 
     checkLoginStatus() {
@@ -88,24 +94,44 @@ class AuthManager {
         });
     }
 
-    // 회원가입 모달 열기
+    // 회원가입 모달 열기 (애니메이션 추가)
     openSignupModal() {
         const modal = document.getElementById('signupModal');
         if (modal) {
             modal.style.display = 'flex';
             document.body.style.overflow = 'hidden';
             
+            // 애니메이션을 위한 클래스 추가
+            setTimeout(() => {
+                modal.classList.add('show');
+            }, 10);
+            
             // 첫 번째 단계로 초기화
             this.resetSignupForm();
+            
+            // 첫 번째 입력 필드에 포커스
+            setTimeout(() => {
+                const firstInput = document.getElementById('signupUserId');
+                if (firstInput) firstInput.focus();
+            }, 100);
         }
     }
 
-    // 회원가입 모달 닫기
+    // 회원가입 모달 닫기 (애니메이션 추가)
     closeSignupModal() {
         const modal = document.getElementById('signupModal');
         if (modal) {
-            modal.style.display = 'none';
-            document.body.style.overflow = 'auto';
+            // 애니메이션 제거
+            modal.classList.remove('show');
+            
+            // 애니메이션 완료 후 모달 숨기기
+            setTimeout(() => {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+                
+                // 폼 초기화
+                this.resetSignupForm();
+            }, 300);
         }
     }
 
@@ -176,7 +202,7 @@ class AuthManager {
             }
             
             if (!this.validatePhone(phone)) {
-                this.showMessage('올바른 핸드폰번호 형식으로 입력해주세요.', 'error');
+                this.showMessage('올바른 핸드폰번호 형식(010-1234-5678)으로 입력해주세요.', 'error');
                 return;
             }
             
@@ -212,9 +238,49 @@ class AuthManager {
                 }
             } catch (error) {
                 console.error('회원가입 오류:', error);
-                this.showMessage('회원가입 중 오류가 발생했습니다.', 'error');
+                this.showMessage(error.message || '회원가입 중 오류가 발생했습니다.', 'error');
             }
         });
+    }
+
+    // 취소 버튼 초기화 (추가)
+    initCancelButtons() {
+        document.querySelectorAll('.btn-close-step').forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.closeSignupModal();
+            });
+        });
+    }
+
+    // 로그인 전환 링크 초기화 (추가)
+    initLoginSwitch() {
+        const loginSwitchLinks = document.querySelectorAll('.switch-to-login');
+        loginSwitchLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.switchToLogin();
+            });
+        });
+    }
+
+    // 로그인으로 전환 (추가)
+    switchToLogin() {
+        // 회원가입 모달 닫기
+        this.closeSignupModal();
+        
+        // 헤더 로그인 폼에 포커스
+        setTimeout(() => {
+            const loginIdInput = document.getElementById('headerLoginId');
+            if (loginIdInput) {
+                loginIdInput.focus();
+                
+                // 모바일 메뉴가 열려있다면 스크롤
+                if (window.innerWidth <= 768) {
+                    loginIdInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }
+        }, 350);
     }
 
     // 회원가입 단계 이동
@@ -229,7 +295,10 @@ class AuthManager {
             // 진행바 업데이트
             const stepNumber = parseInt(stepId.replace('step', ''));
             const progress = (stepNumber / 3) * 100;
-            document.querySelector('.progress-fill').style.width = `${progress}%`;
+            const progressFill = document.querySelector('.progress-fill');
+            if (progressFill) {
+                progressFill.style.width = `${progress}%`;
+            }
             
             // 진행 단계 표시 업데이트
             const progressSteps = document.querySelectorAll('.progress-step');
@@ -250,6 +319,12 @@ class AuthManager {
         const form = document.getElementById('signupForm');
         if (form) {
             form.reset();
+            
+            // 체크박스 초기화
+            const checkboxes = form.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = false;
+            });
         }
     }
 
@@ -368,14 +443,17 @@ class AuthManager {
             // 로그인 상태
             if (userInfo) {
                 userInfo.style.display = 'flex';
-                document.querySelector('.user-name').textContent = this.currentUser.name;
+                const userNameElement = document.querySelector('.user-name');
+                if (userNameElement) {
+                    userNameElement.textContent = this.currentUser.name;
+                }
                 
                 const avatar = document.querySelector('.user-avatar');
                 if (avatar) {
                     avatar.textContent = this.currentUser.name.charAt(0).toUpperCase();
                     
                     // 아바타 색상
-                    const colors = ['#3b82f6', '#10b981', '#8b5cf6', '#ef4444', '#f59e0b'];
+                    const colors = ['#D4A76A', '#B8934F', '#9D6B53', '#1A1A2E', '#2D3047'];
                     const colorIndex = this.currentUser.name.charCodeAt(0) % colors.length;
                     avatar.style.background = colors[colorIndex];
                 }
@@ -438,6 +516,12 @@ class AuthManager {
 
     // 메시지 표시
     showMessage(message, type = 'info') {
+        // 기존 메시지 제거
+        const existingMessage = document.querySelector('.form-message');
+        if (existingMessage) {
+            existingMessage.remove();
+        }
+        
         const messageDiv = document.createElement('div');
         messageDiv.className = `form-message form-message--${type}`;
         messageDiv.innerHTML = `
@@ -448,37 +532,20 @@ class AuthManager {
             <button class="form-message-close">&times;</button>
         `;
         
-        messageDiv.style.cssText = `
-            position: fixed;
-            top: 100px;
-            right: 20px;
-            background: ${type === 'success' ? '#10b981' : '#ef4444'};
-            color: white;
-            padding: 16px 20px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            min-width: 300px;
-            max-width: 400px;
-            z-index: 10000;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            animation: slideIn 0.3s ease;
-        `;
-        
+        // 스타일은 CSS에서 처리되도록 class만 추가
         document.body.appendChild(messageDiv);
         
-        // 닫기 버튼
+        // 닫기 버튼 이벤트
         const closeBtn = messageDiv.querySelector('.form-message-close');
         closeBtn.addEventListener('click', () => {
-            messageDiv.style.animation = 'slideOut 0.3s ease';
+            messageDiv.classList.add('hide');
             setTimeout(() => messageDiv.remove(), 300);
         });
         
         // 5초 후 자동 제거
         setTimeout(() => {
             if (messageDiv.parentNode) {
-                messageDiv.style.animation = 'slideOut 0.3s ease';
+                messageDiv.classList.add('hide');
                 setTimeout(() => messageDiv.remove(), 300);
             }
         }, 5000);
@@ -500,9 +567,10 @@ document.addEventListener('DOMContentLoaded', () => {
     authManager = new AuthManager();
     window.authManager = authManager;
     
-    // 모달 닫기 버튼
+    // 모달 닫기 버튼 (X 버튼)
     document.querySelectorAll('.close-modal').forEach(button => {
-        button.addEventListener('click', () => {
+        button.addEventListener('click', (e) => {
+            e.preventDefault();
             closeSignupModal();
         });
     });
