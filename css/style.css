@@ -1547,3 +1547,152 @@ h1, h2, h3, h4, h5, h6 {
         width: 100%;
     }
 }
+
+/* 메시지 스타일 추가 */
+.form-message {
+    position: fixed;
+    top: 100px;
+    right: 20px;
+    padding: 16px 20px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-width: 300px;
+    max-width: 400px;
+    z-index: 10000;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    animation: slideIn 0.3s ease;
+}
+
+.form-message--success {
+    background: #10b981;
+    color: white;
+}
+
+.form-message--error {
+    background: #ef4444;
+    color: white;
+}
+
+.form-message--info {
+    background: var(--secondary);
+    color: white;
+}
+
+.form-message.hide {
+    animation: slideOut 0.3s ease;
+    opacity: 0;
+    transform: translateX(100%);
+}
+
+.form-message-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+}
+
+.form-message-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 10px;
+}
+
+.form-message-close:hover {
+    opacity: 0.8;
+}
+
+/* 모달 애니메이션 */
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+/* 회원가입 모달 애니메이션 */
+.signup-modal.show .modal-content {
+    animation: modalSlideIn 0.3s ease;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-30px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.signup-modal:not(.show) .modal-content {
+    animation: modalSlideOut 0.3s ease;
+}
+
+@keyframes modalSlideOut {
+    from {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-30px) scale(0.95);
+    }
+}
+
+/* 취소 버튼 스타일 */
+.btn-close-step {
+    background: var(--light-gray);
+    color: var(--gray);
+    border: 1px solid var(--gray-light);
+    padding: 12px 20px;
+    border-radius: var(--radius-md);
+    font-family: var(--font-heading);
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition-fast);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-xs);
+    text-decoration: none;
+}
+
+.btn-close-step:hover {
+    background: var(--gray-light);
+    color: var(--primary);
+}
+
+/* 폼 액션 영역 */
+.form-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-md);
+    margin-top: var(--space-xl);
+}
