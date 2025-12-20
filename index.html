@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ashop - 브랜딩을 위한 전략적 홈페이지</title>
     
-    <!-- 폰트 -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <!-- 구글 폰트 -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Montserrat:wght@600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
     
     <!-- 아이콘 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -34,18 +34,29 @@
                     <a href="#process" class="nav-link">프로세스</a>
                     <a href="#contact" class="nav-link">문의하기</a>
                     <a href="#estimate" class="nav-link">견적신청</a>
-                    <a href="https://thebestys.github.io/as/" class="estimate" target="_blank">무료 견적</a>
                     
-                    <!-- 로그인 버튼 추가 -->
-                    <a href="#" class="nav-link login-btn" id="loginLink">
-                        <i class="fas fa-user"></i> 로그인/회원가입
-                    </a>
-                    
-                    <!-- 사용자 정보 (로그인 상태일 때 표시) -->
-                    <div class="user-info">
-                        <div class="user-avatar"></div>
-                        <span class="user-name"></span>
-                        <button class="btn-logout">로그아웃</button>
+                    <!-- 로그인/사용자 정보 영역 -->
+                    <div class="auth-area">
+                        <!-- 로그인 상태 -->
+                        <div class="user-info">
+                            <div class="user-avatar"></div>
+                            <span class="user-name"></span>
+                            <button class="btn-logout">로그아웃</button>
+                        </div>
+                        
+                        <!-- 비로그인 상태 -->
+                        <div class="login-form-container">
+                            <form class="header-login-form">
+                                <input type="text" class="login-input" id="headerLoginId" placeholder="아이디">
+                                <input type="password" class="login-input" id="headerLoginPassword" placeholder="비밀번호">
+                                <button type="submit" class="btn-login-small">로그인</button>
+                            </form>
+                            <div class="login-links">
+                                <a href="#" class="signup-link">회원가입</a>
+                                <span class="divider">|</span>
+                                <a href="#" class="find-link">아이디/비밀번호 찾기</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 
@@ -60,24 +71,30 @@
     <section class="hero-section">
         <div class="container">
             <div class="hero-content">
-                <h1 class="hero-title">Building Brands<br><span class="highlight">That Matter</span></h1>
+                <h1 class="hero-title">
+                    <span class="hero-title-line">Digital Branding</span>
+                    <span class="hero-title-line highlight">That Inspires</span>
+                </h1>
                 <p class="hero-subtitle">
-                    홈페이지 제작이 아닌, <strong>브랜딩을 위한 홈페이지</strong>를 만듭니다.<br>
-                    마케팅과 영업을 이끌어내는 전략적 디지털 존재감을 설계합니다.
+                    단순한 웹사이트가 아닌, <strong>브랜드의 영혼을 담은 디지털 존재감</strong>을 만듭니다.<br>
+                    전략적 접근으로 시장에서 돋보이는 브랜드 아이덴티티를 설계합니다.
                 </p>
                 <div class="hero-buttons">
                     <a href="#estimate" class="btn-primary">
-                        <i class="fas fa-file-alt"></i> 무료 견적 신청
+                        <i class="fas fa-rocket"></i> 무료 컨설팅 신청
                     </a>
                     <a href="#philosophy" class="btn-secondary">
-                        <i class="fas fa-play-circle"></i> 우리의 철학 보기
+                        <i class="fas fa-play-circle"></i> 브랜드 철학 살펴보기
                     </a>
                 </div>
             </div>
             
             <div class="hero-visual">
-                <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" 
-                     alt="브랜드 전략 워크샵" class="hero-image" loading="lazy">
+                <div class="hero-image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" 
+                         alt="브랜드 전략 워크샵" class="hero-image" loading="lazy">
+                    <div class="image-overlay"></div>
+                </div>
             </div>
         </div>
     </section>
@@ -86,6 +103,7 @@
     <section class="philosophy-section" id="philosophy">
         <div class="container">
             <div class="section-header">
+                <span class="section-label">Our Philosophy</span>
                 <h2 class="section-title">a의 철학, shop의 전략</h2>
                 <p class="section-subtitle">ashop은 단순한 웹사이트 제작자가 아닌, 디지털 브랜드 아키텍트입니다.</p>
             </div>
@@ -133,10 +151,16 @@
             </div>
             
             <div class="philosophy-statement">
+                <div class="statement-icon">
+                    <i class="fas fa-quote-left"></i>
+                </div>
                 <p class="statement">
                     "ashop은 <strong>진정성 있는 디지털 존재감을 종합적으로 구축하는 전략적 미학 작업실</strong>입니다.<br>
                     우리는 단순히 '홈페이지를 만드는' 것이 아니라, 당신의 브랜드가 시장에서 <strong>기억되고, 사랑받고, 성장할 수 있는 기반</strong>을 설계합니다."
                 </p>
+                <div class="statement-author">
+                    <span>ashop 디자인 총괄</span>
+                </div>
             </div>
         </div>
     </section>
@@ -145,17 +169,24 @@
     <section class="services-section" id="services">
         <div class="container">
             <div class="section-header">
-                <h2 class="section-title">서비스 소개</h2>
-                <p class="section-subtitle">당신의 브랜드 성장을 위한 종합적 솔루션을 제공합니다.</p>
+                <span class="section-label">Our Services</span>
+                <h2 class="section-title">종합 브랜딩 솔루션</h2>
+                <p class="section-subtitle">당신의 비전을 현실로 만드는 완벽한 파트너</p>
             </div>
             
             <div class="services-grid">
                 <div class="service-card">
                     <div class="service-icon">
-                        <i class="fas fa-paint-brush"></i>
+                        <i class="fas fa-palette"></i>
                     </div>
-                    <h3>브랜드 디자인</h3>
-                    <p>로고, CI/BI, 그래픽 아이덴티티 등 브랜드의 시각적 언어를 설계합니다.</p>
+                    <h3>브랜드 아이덴티티</h3>
+                    <p>로고, CI/BI, 그래픽 시스템 등 브랜드의 시각적 언어를 체계적으로 설계합니다.</p>
+                    <ul class="service-features">
+                        <li>브랜드 전략 수립</li>
+                        <li>로고 디자인</li>
+                        <li>컬러 시스템</li>
+                        <li>타이포그래피</li>
+                    </ul>
                 </div>
                 
                 <div class="service-card">
@@ -164,6 +195,12 @@
                     </div>
                     <h3>웹사이트 제작</h3>
                     <p>반응형 웹사이트부터 커머스까지, 전략적 디지털 플랫폼을 구축합니다.</p>
+                    <ul class="service-features">
+                        <li>반응형 웹디자인</li>
+                        <li>웹사이트 개발</li>
+                        <li>e-커머스 솔루션</li>
+                        <li>CMS 구축</li>
+                    </ul>
                 </div>
                 
                 <div class="service-card">
@@ -172,6 +209,12 @@
                     </div>
                     <h3>디지털 마케팅</h3>
                     <p>타겟팅 광고, 콘텐츠 전략으로 온라인에서의 가시성을 높입니다.</p>
+                    <ul class="service-features">
+                        <li>콘텐츠 마케팅</li>
+                        <li>SMS 마케팅</li>
+                        <li>SEO 최적화</li>
+                        <li>소셜미디어 관리</li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -181,39 +224,58 @@
     <section class="process-section" id="process">
         <div class="container">
             <div class="section-header">
-                <h2 class="section-title">제작 프로세스</h2>
-                <p class="section-subtitle">체계적인 접근으로 완성도를 높입니다.</p>
+                <span class="section-label">Our Process</span>
+                <h2 class="section-title">체계적인 제작 프로세스</h2>
+                <p class="section-subtitle">6단계 시스템으로 완성도를 극대화합니다</p>
             </div>
             
-            <div class="process-steps">
+            <div class="process-timeline">
                 <div class="process-step">
                     <div class="step-number">01</div>
-                    <h3>컨설팅</h3>
-                    <p>브랜드 분석과 목표 설정</p>
+                    <div class="step-content">
+                        <h3>디스커버리</h3>
+                        <p>브랜드 분석과 목표 설정, 시장 조사를 통한 전략 수립</p>
+                    </div>
                 </div>
                 
                 <div class="process-step">
                     <div class="step-number">02</div>
-                    <h3>전략 수립</h3>
-                    <p>디자인 및 기술 전략 정의</p>
+                    <div class="step-content">
+                        <h3>전략 수립</h3>
+                        <p>타겟 분석, 커뮤니케이션 전략, 디자인 방향성 결정</p>
+                    </div>
                 </div>
                 
                 <div class="process-step">
                     <div class="step-number">03</div>
-                    <h3>디자인</h3>
-                    <p>와이어프레임부터 시각 디자인까지</p>
+                    <div class="step-content">
+                        <h3>디자인</h3>
+                        <p>와이어프레임, 모크업, 프로토타입을 통한 시각 디자인 완성</p>
+                    </div>
                 </div>
                 
                 <div class="process-step">
                     <div class="step-number">04</div>
-                    <h3>개발</h3>
-                    <p>코딩과 기술적 구현</p>
+                    <div class="step-content">
+                        <h3>개발</h3>
+                        <p>프론트엔드/백엔드 개발, 기능 구현, 최적화 작업</p>
+                    </div>
                 </div>
                 
                 <div class="process-step">
                     <div class="step-number">05</div>
-                    <h3>런칭</h3>
-                    <p>테스트 및 최적화 후 배포</p>
+                    <div class="step-content">
+                        <h3>테스트</h3>
+                        <p>QA 테스트, 크로스브라우징, 성능 최적화, 보안 점검</p>
+                    </div>
+                </div>
+                
+                <div class="process-step">
+                    <div class="step-number">06</div>
+                    <div class="step-content">
+                        <h3>런칭</h3>
+                        <p>배포, 모니터링, 유지보수, 성과 분석 시스템 구축</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -223,8 +285,9 @@
     <section class="estimate-section" id="estimate">
         <div class="container">
             <div class="section-header">
-                <h2 class="section-title">무료 견적 신청</h2>
-                <p class="section-subtitle">프로젝트에 맞는 맞춤형 견적을 받아보세요.</p>
+                <span class="section-label">Get Started</span>
+                <h2 class="section-title">무료 컨설팅 신청</h2>
+                <p class="section-subtitle">프로젝트에 맞는 맞춤형 솔루션 제안을 받아보세요</p>
             </div>
             <!-- 폼은 form-handler.js에서 자동 삽입됨 -->
         </div>
@@ -234,8 +297,9 @@
     <section class="contact-section" id="contact">
         <div class="container">
             <div class="section-header">
+                <span class="section-label">Contact Us</span>
                 <h2 class="section-title">문의하기</h2>
-                <p class="section-subtitle">프로젝트에 대해 궁금한 점이 있으시면 언제든지 문의해주세요.</p>
+                <p class="section-subtitle">프로젝트에 대해 궁금한 점이 있으시면 언제든지 연락주세요</p>
             </div>
             <!-- 폼은 form-handler.js에서 자동 삽입됨 -->
         </div>
@@ -249,28 +313,37 @@
                     <a href="/" class="footer-logo">ashop</a>
                     <p class="footer-tagline">Architecting Digital Presence</p>
                     <p class="footer-philosophy">진정성 있는 디지털 존재감을 종합적으로 구축하는 전략적 미학 작업실</p>
+                    
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                    </div>
                 </div>
                 
                 <div class="footer-links">
-                    <div class="footer-column">
-                        <h4>문의</h4>
-                        <p><i class="fas fa-envelope"></i> contact@ashop.design</p>
-                        <p><i class="fas fa-phone"></i> 02-1234-5678</p>
-                    </div>
-                    
                     <div class="footer-column">
                         <h4>서비스</h4>
                         <a href="#philosophy">브랜드 철학</a>
                         <a href="#services">서비스 소개</a>
                         <a href="#process">제작 프로세스</a>
-                        <a href="#contact">문의하기</a>
+                        <a href="#estimate">견적 신청</a>
+                    </div>
+                    
+                    <div class="footer-column">
+                        <h4>문의</h4>
+                        <p><i class="fas fa-envelope"></i> contact@ashop.design</p>
+                        <p><i class="fas fa-phone"></i> 02-1234-5678</p>
+                        <p><i class="fas fa-clock"></i> 평일 09:00 - 18:00</p>
                     </div>
                     
                     <div class="footer-column">
                         <h4>계정</h4>
-                        <a href="#" class="login-btn">로그인</a>
-                        <a href="#" class="login-btn">회원가입</a>
+                        <a href="#" class="signup-link-footer">회원가입</a>
+                        <a href="#" class="login-link-footer">로그인</a>
                         <a href="#privacy">개인정보처리방침</a>
+                        <a href="#terms">이용약관</a>
                     </div>
                 </div>
             </div>
@@ -279,78 +352,144 @@
                 <p>© 2024 ashop. All rights reserved.</p>
                 <div class="footer-legal">
                     <a href="#privacy">개인정보처리방침</a>
+                    <span class="divider">|</span>
                     <a href="#terms">이용약관</a>
+                    <span class="divider">|</span>
+                    <a href="#sitemap">사이트맵</a>
                 </div>
             </div>
         </div>
     </footer>
     
-    <!-- 로그인/회원가입 모달 -->
-    <div class="login-modal" id="loginModal">
+    <!-- 회원가입 모달 -->
+    <div class="signup-modal" id="signupModal">
         <div class="modal-content">
             <button class="close-modal">&times;</button>
-            <h3 class="modal-title">로그인 / 회원가입</h3>
-            
-            <div class="auth-tabs">
-                <button class="auth-tab active" data-tab="login">로그인</button>
-                <button class="auth-tab" data-tab="signup">회원가입</button>
+            <div class="modal-header">
+                <h3 class="modal-title">회원가입</h3>
+                <p class="modal-subtitle">ashop 회원이 되어 맞춤형 서비스를 경험해보세요</p>
             </div>
             
-            <!-- 로그인 폼 -->
-            <form class="auth-form active" id="loginForm">
-                <div class="form-group">
-                    <label for="loginEmail">이메일 *</label>
-                    <input type="email" id="loginEmail" name="email" placeholder="이메일을 입력하세요" required>
+            <form class="signup-form" id="signupForm">
+                <div class="form-step active" id="step1">
+                    <h4>기본 정보 입력</h4>
+                    
+                    <div class="form-group">
+                        <label for="signupUserId">아이디 *</label>
+                        <input type="text" id="signupUserId" name="userId" placeholder="영문, 숫자 조합 4-20자" required>
+                        <div class="form-hint">영문과 숫자를 조합하여 4-20자로 입력해주세요</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="signupPassword">비밀번호 *</label>
+                        <input type="password" id="signupPassword" name="password" placeholder="영문, 숫자, 특수문자 조합 8자 이상" required>
+                        <div class="form-hint">영문, 숫자, 특수문자를 포함하여 8자 이상 입력해주세요</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="confirmPassword">비밀번호 확인 *</label>
+                        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="비밀번호를 다시 입력해주세요" required>
+                    </div>
+                    
+                    <button type="button" class="btn-next-step" data-next="step2">
+                        다음 단계 <i class="fas fa-arrow-right"></i>
+                    </button>
                 </div>
                 
-                <div class="form-group">
-                    <label for="loginPassword">비밀번호 *</label>
-                    <input type="password" id="loginPassword" name="password" placeholder="비밀번호를 입력하세요" required>
+                <div class="form-step" id="step2">
+                    <h4>개인 정보 입력</h4>
+                    
+                    <div class="form-group">
+                        <label for="signupName">성명 *</label>
+                        <input type="text" id="signupName" name="name" placeholder="실명을 입력해주세요" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="signupPhone">핸드폰번호 *</label>
+                        <input type="tel" id="signupPhone" name="phone" placeholder="010-1234-5678" required>
+                        <button type="button" class="btn-verify">인증번호 발송</button>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="signupEmail">이메일 *</label>
+                        <input type="email" id="signupEmail" name="email" placeholder="example@ashop.design" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="companyName">회사명 (선택)</label>
+                        <input type="text" id="companyName" name="company" placeholder="소속 회사명">
+                    </div>
+                    
+                    <div class="form-navigation">
+                        <button type="button" class="btn-prev-step" data-prev="step1">
+                            <i class="fas fa-arrow-left"></i> 이전
+                        </button>
+                        <button type="button" class="btn-next-step" data-next="step3">
+                            다음 단계 <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
                 </div>
                 
-                <button type="submit" class="btn-login">
-                    <i class="fas fa-sign-in-alt"></i> 로그인
-                </button>
+                <div class="form-step" id="step3">
+                    <h4>약관 동의</h4>
+                    
+                    <div class="terms-group">
+                        <div class="term-item">
+                            <label class="term-checkbox">
+                                <input type="checkbox" id="termAll" name="termAll">
+                                <span>전체 약관에 동의합니다</span>
+                            </label>
+                        </div>
+                        
+                        <div class="term-item">
+                            <label class="term-checkbox">
+                                <input type="checkbox" id="termService" name="termService" required>
+                                <span>서비스 이용약관 동의 <span class="term-required">(필수)</span></span>
+                            </label>
+                            <a href="#" class="term-view">보기</a>
+                        </div>
+                        
+                        <div class="term-item">
+                            <label class="term-checkbox">
+                                <input type="checkbox" id="termPrivacy" name="termPrivacy" required>
+                                <span>개인정보 처리방침 동의 <span class="term-required">(필수)</span></span>
+                            </label>
+                            <a href="#" class="term-view">보기</a>
+                        </div>
+                        
+                        <div class="term-item">
+                            <label class="term-checkbox">
+                                <input type="checkbox" id="termMarketing" name="termMarketing">
+                                <span>마케팅 정보 수신 동의 <span class="term-optional">(선택)</span></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-navigation">
+                        <button type="button" class="btn-prev-step" data-prev="step2">
+                            <i class="fas fa-arrow-left"></i> 이전
+                        </button>
+                        <button type="submit" class="btn-complete">
+                            <i class="fas fa-check-circle"></i> 회원가입 완료
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="form-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 33%"></div>
+                    </div>
+                    <div class="progress-steps">
+                        <span class="progress-step active">1</span>
+                        <span class="progress-step">2</span>
+                        <span class="progress-step">3</span>
+                    </div>
+                </div>
             </form>
             
-            <!-- 회원가입 폼 (성명, 핸드폰번호, 이메일) -->
-            <form class="auth-form" id="signupForm">
-                <div class="form-group">
-                    <label for="signupName">성명 *</label>
-                    <input type="text" id="signupName" name="name" placeholder="성명을 입력하세요" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="signupPhone">핸드폰번호 *</label>
-                    <input type="tel" id="signupPhone" name="phone" placeholder="010-1234-5678" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="signupEmail">이메일 *</label>
-                    <input type="email" id="signupEmail" name="email" placeholder="이메일을 입력하세요" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="signupPassword">비밀번호 *</label>
-                    <input type="password" id="signupPassword" name="password" placeholder="비밀번호를 입력하세요" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="confirmPassword">비밀번호 확인 *</label>
-                    <input type="password" id="confirmPassword" name="confirmPassword" placeholder="비밀번호를 다시 입력하세요" required>
-                </div>
-                
-                <div class="form-group checkbox-group">
-                    <label>
-                        <input type="checkbox" id="agreeTerms" name="agreeTerms" required>
-                        <span>개인정보 처리방침 및 이용약관에 동의합니다.</span>
-                    </label>
-                </div>
-                
-                <button type="submit" class="btn-signup">
-                    <i class="fas fa-user-plus"></i> 회원가입
-                </button>
-            </form>
+            <div class="modal-footer">
+                <p>이미 계정이 있으신가요? <a href="#" class="switch-to-login">로그인</a></p>
+            </div>
         </div>
     </div>
     
@@ -361,7 +500,6 @@
     
     <!-- Google Sheets 연동 설정 -->
     <script>
-        // Google Apps Script 배포 URL
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxKeEtnfDPSuZunaw8nYVBWA9WnDeEwHi_G4zu6g_KlhLCisq8kmAiZeVs1l4N4yhS6/exec';
     </script>
 </body>
