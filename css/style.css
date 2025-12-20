@@ -1,30 +1,37 @@
 /* ===========================================
-   CSS Variables - 디자인 시스템
+   CSS Variables - 전문 컨설팅 컬러 시스템
    =========================================== */
 :root {
-    /* Colors */
-    --primary: #111827;
-    --primary-light: #374151;
-    --secondary: #3b82f6;
-    --secondary-light: #60a5fa;
-    --secondary-dark: #1d4ed8;
-    --accent: #8b5cf6;
-    --accent-light: #a78bfa;
-    --success: #10b981;
-    --warning: #f59e0b;
-    --danger: #ef4444;
-    --light: #f9fafb;
-    --light-gray: #f3f4f6;
-    --gray: #6b7280;
-    --gray-light: #e5e7eb;
-    --dark: #1f2937;
+    /* Brand Colors - 전문 컨설팅 & 크리에이티브 컬러 */
+    --primary: #1A1A2E;       /* 딥 네이비 - 전문성과 신뢰 */
+    --primary-light: #2D3047;  /* 라이트 네이비 */
+    --secondary: #D4A76A;      /* 웜 골드 - 럭셔리 & 프리미엄 */
+    --secondary-light: #E8D0A9; /* 라이트 골드 */
+    --secondary-dark: #B8934F;  /* 다크 골드 */
+    --accent: #9D6B53;         /* 웜 브라운 - 편안함과 고급스러움 */
+    --accent-light: #C4A88A;   /* 라이트 브라운 */
+    --accent-dark: #7B5539;    /* 다크 브라운 */
+    --success: #28A745;        /* 성공 - 그린 */
+    --warning: #FFC107;        /* 주의 - 옐로우 */
+    --danger: #DC3545;         /* 위험 - 레드 */
+    --light: #F8F9FA;          /* 라이트 그레이 */
+    --light-gray: #E9ECEF;     /* 라이트 그레이 2 */
+    --gray: #6C757D;           /* 미디엄 그레이 */
+    --gray-light: #CED4DA;     /* 라이트 그레이 3 */
+    --dark: #212529;           /* 다크 그레이 */
+    
+    /* Gradient Colors */
+    --gradient-primary: linear-gradient(135deg, #1A1A2E 0%, #2D3047 100%);
+    --gradient-secondary: linear-gradient(135deg, #D4A76A 0%, #B8934F 100%);
+    --gradient-accent: linear-gradient(135deg, #9D6B53 0%, #7B5539 100%);
+    --gradient-light: linear-gradient(135deg, #F8F9FA 0%, #E9ECEF 100%);
     
     /* Typography */
     --font-heading: 'Montserrat', 'Noto Sans KR', sans-serif;
     --font-subheading: 'Playfair Display', serif;
     --font-body: 'Noto Sans KR', sans-serif;
     --font-mono: 'SF Mono', monospace;
-    
+
     /* Spacing */
     --space-xs: 0.25rem;
     --space-sm: 0.5rem;
@@ -195,7 +202,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .logo-mark {
-    background: linear-gradient(135deg, var(--secondary) 0%, var(--accent) 100%);
+    background: var(--gradient-secondary);
     color: white;
     width: 42px;
     height: 42px;
@@ -205,6 +212,7 @@ h1, h2, h3, h4, h5, h6 {
     border-radius: var(--radius-md);
     margin-right: var(--space-sm);
     font-size: 1.5rem;
+    box-shadow: 0 4px 12px rgba(212, 167, 106, 0.3);
 }
 
 .nav-menu {
@@ -278,7 +286,7 @@ h1, h2, h3, h4, h5, h6 {
 .login-input:focus {
     outline: none;
     border-color: var(--secondary);
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    box-shadow: 0 0 0 3px rgba(212, 167, 106, 0.1);
 }
 
 .btn-login-small {
@@ -336,7 +344,7 @@ h1, h2, h3, h4, h5, h6 {
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    background: linear-gradient(135deg, var(--secondary) 0%, var(--accent) 100%);
+    background: var(--gradient-secondary);
     color: white;
     display: flex;
     align-items: center;
@@ -373,7 +381,14 @@ h1, h2, h3, h4, h5, h6 {
    =========================================== */
 .hero-section {
     padding: calc(var(--header-height) + var(--space-3xl)) 0 var(--space-3xl);
-    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    background: linear-gradient(135deg, 
+        rgba(26, 26, 46, 0.95) 0%, 
+        rgba(45, 48, 71, 0.9) 50%, 
+        rgba(157, 107, 83, 0.1) 100%),
+        url('https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80');
+    background-size: cover;
+    background-position: center;
+    color: white;
     position: relative;
     overflow: hidden;
 }
@@ -385,51 +400,92 @@ h1, h2, h3, h4, h5, h6 {
     right: 0;
     width: 50%;
     height: 100%;
-    background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.8) 100%);
+    background: linear-gradient(90deg, transparent 0%, rgba(26, 26, 46, 0.8) 100%);
     z-index: 1;
 }
 
 .hero-content {
     position: relative;
     z-index: 2;
-    max-width: 600px;
+    max-width: 700px;
+}
+
+.hero-title {
+    font-size: 3.75rem;
+    font-weight: 800;
+    margin-bottom: var(--space-lg);
+    color: white;
+}
+
+.hero-title-line {
+    display: block;
+}
+
+.highlight {
+    color: var(--secondary);
+    position: relative;
+    display: inline-block;
+}
+
+.highlight::after {
+    content: '';
+    position: absolute;
+    bottom: 8px;
+    left: 0;
+    width: 100%;
+    height: 12px;
+    background: linear-gradient(90deg, 
+        rgba(212, 167, 106, 0.4) 0%, 
+        transparent 100%);
+    z-index: -1;
 }
 
 .hero-subtitle {
-    font-size: 1.25rem;
-    color: var(--primary-light);
+    font-size: 1.375rem;
+    color: rgba(255, 255, 255, 0.9);
     margin-bottom: var(--space-2xl);
     line-height: 1.8;
+    font-weight: 300;
 }
 
 .hero-subtitle strong {
     color: var(--secondary);
-    font-weight: 600;
+    font-weight: 500;
 }
 
-.hero-buttons {
-    display: flex;
-    gap: var(--space-md);
-    flex-wrap: wrap;
-}
-
-.btn-primary, .btn-secondary {
-    padding: var(--space-lg) var(--space-2xl);
+/* 버튼 개선 */
+.btn-primary {
+    background: var(--gradient-secondary);
+    color: white;
+    border: none;
+    padding: 16px 32px;
     border-radius: var(--radius-lg);
-    text-decoration: none;
     font-family: var(--font-heading);
     font-weight: 600;
     font-size: 1rem;
+    text-decoration: none;
     display: inline-flex;
     align-items: center;
     gap: var(--space-sm);
     transition: var(--transition-normal);
+    box-shadow: 0 8px 25px rgba(212, 167, 106, 0.3);
+    position: relative;
+    overflow: hidden;
 }
 
-.btn-primary {
-    background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-dark) 100%);
-    color: white;
-    box-shadow: var(--shadow-lg);
+.btn-primary::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: var(--transition-normal);
+}
+
+.btn-primary:hover::after {
+    left: 100%;
 }
 
 .btn-primary:hover {
@@ -438,49 +494,36 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .btn-secondary {
-    background: white;
-    color: var(--primary);
-    border: 2px solid var(--gray-light);
+    background: transparent;
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+    padding: 16px 32px;
+    border-radius: var(--radius-lg);
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 1rem;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    transition: var(--transition-normal);
 }
 
 .btn-secondary:hover {
     border-color: var(--secondary);
-    color: var(--secondary);
+    background: rgba(212, 167, 106, 0.1);
     transform: translateY(-2px);
 }
 
+.hero-buttons {
+    display: flex;
+    gap: var(--space-md);
+    flex-wrap: wrap;
+}
+
 .hero-visual {
-    position: absolute;
-    top: 50%;
-    right: 0;
-    transform: translateY(-50%);
-    width: 50%;
-    height: 100%;
-    z-index: 1;
-}
-
-.hero-image-wrapper {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    border-radius: var(--radius-xl) 0 0 var(--radius-xl);
-}
-
-.hero-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-}
-
-.image-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0) 100%);
+    display: none; /* 배경 이미지로 대체 */
 }
 
 /* ===========================================
@@ -488,7 +531,7 @@ h1, h2, h3, h4, h5, h6 {
    =========================================== */
 .philosophy-section {
     padding: var(--space-3xl) 0;
-    background: white;
+    background: linear-gradient(135deg, #F8F9FA 0%, #FFFFFF 100%);
 }
 
 .philosophy-content {
@@ -499,18 +542,30 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .philosophy-card {
-    text-align: center;
-    padding: var(--space-2xl) var(--space-lg);
-    background: var(--light);
+    background: white;
     border-radius: var(--radius-lg);
+    padding: var(--space-2xl);
+    box-shadow: var(--shadow-lg);
     transition: var(--transition-normal);
+    position: relative;
+    overflow: hidden;
+    text-align: center;
     border: 1px solid transparent;
+}
+
+.philosophy-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: var(--gradient-secondary);
 }
 
 .philosophy-card:hover {
     transform: translateY(-8px);
-    box-shadow: var(--shadow-lg);
-    border-color: var(--secondary-light);
+    box-shadow: 0 20px 40px rgba(26, 26, 46, 0.1);
 }
 
 .philosophy-icon {
@@ -520,8 +575,9 @@ h1, h2, h3, h4, h5, h6 {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, var(--secondary-light) 0%, var(--accent-light) 100%);
+    background: var(--gradient-primary);
     border-radius: 50%;
+    box-shadow: 0 8px 20px rgba(26, 26, 46, 0.15);
 }
 
 .philosophy-icon span {
@@ -593,7 +649,7 @@ h1, h2, h3, h4, h5, h6 {
    =========================================== */
 .services-section {
     padding: var(--space-3xl) 0;
-    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    background: linear-gradient(135deg, #FFFFFF 0%, #F8F9FA 100%);
 }
 
 .services-grid {
@@ -605,21 +661,35 @@ h1, h2, h3, h4, h5, h6 {
 
 .service-card {
     background: white;
-    padding: var(--space-2xl);
     border-radius: var(--radius-lg);
-    transition: var(--transition-normal);
+    padding: var(--space-2xl);
     box-shadow: var(--shadow-md);
+    transition: var(--transition-normal);
+    border-top: 4px solid transparent;
+    height: 100%;
+}
+
+.service-card:nth-child(1) {
+    border-top-color: var(--secondary);
+}
+
+.service-card:nth-child(2) {
+    border-top-color: var(--accent);
+}
+
+.service-card:nth-child(3) {
+    border-top-color: var(--primary);
 }
 
 .service-card:hover {
     transform: translateY(-8px);
-    box-shadow: var(--shadow-xl);
+    box-shadow: 0 25px 50px rgba(26, 26, 46, 0.15);
 }
 
 .service-icon {
     width: 70px;
     height: 70px;
-    background: linear-gradient(135deg, var(--secondary) 0%, var(--accent) 100%);
+    background: var(--gradient-primary);
     color: white;
     border-radius: var(--radius-lg);
     display: flex;
@@ -627,6 +697,7 @@ h1, h2, h3, h4, h5, h6 {
     justify-content: center;
     margin-bottom: var(--space-lg);
     font-size: 1.75rem;
+    box-shadow: 0 8px 20px rgba(26, 26, 46, 0.15);
 }
 
 .service-card h3 {
@@ -667,7 +738,7 @@ h1, h2, h3, h4, h5, h6 {
    =========================================== */
 .process-section {
     padding: var(--space-3xl) 0;
-    background: white;
+    background: linear-gradient(135deg, #F8F9FA 0%, #FFFFFF 100%);
 }
 
 .process-timeline {
@@ -683,7 +754,7 @@ h1, h2, h3, h4, h5, h6 {
     left: 50px;
     bottom: 0;
     width: 2px;
-    background: linear-gradient(to bottom, var(--secondary-light), var(--accent-light));
+    background: var(--gradient-secondary);
 }
 
 .process-step {
@@ -697,8 +768,8 @@ h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading);
     font-size: 3rem;
     font-weight: 800;
-    color: var(--secondary-light);
-    opacity: 0.3;
+    color: var(--secondary);
+    opacity: 0.8;
 }
 
 .step-content {
@@ -718,11 +789,11 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ===========================================
-   Forms Section
+   폼 섹션 (크기 축소)
    =========================================== */
 .estimate-section,
 .contact-section {
-    padding: var(--space-3xl) 0;
+    padding: var(--space-2xl) 0;
 }
 
 .estimate-section {
@@ -733,8 +804,95 @@ h1, h2, h3, h4, h5, h6 {
     background: white;
 }
 
+.contact-form,
+.estimate-form {
+    max-width: 500px; /* 폼 너비 축소 */
+    margin: var(--space-xl) auto 0;
+    background: white;
+    padding: var(--space-xl);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+}
+
+.form-section {
+    margin-bottom: var(--space-lg); /* 간격 축소 */
+    padding: var(--space-lg); /* 패딩 축소 */
+    background: var(--light);
+    border-radius: var(--radius-md);
+}
+
+.form-section h4 {
+    font-size: 1.125rem; /* 폰트 크기 축소 */
+    margin-bottom: var(--space-md);
+    padding-bottom: var(--space-sm);
+    border-bottom: 2px solid var(--secondary);
+}
+
+.form-group {
+    margin-bottom: var(--space-md); /* 간격 축소 */
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: var(--space-xs);
+    font-weight: 600;
+    color: var(--primary);
+    font-size: 0.9rem; /* 라벨 폰트 축소 */
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 10px 14px; /* 패딩 축소 */
+    border: 1px solid var(--gray-light);
+    border-radius: var(--radius-md);
+    font-family: var(--font-body);
+    font-size: 0.95rem; /* 폰트 축소 */
+    transition: var(--transition-fast);
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--secondary);
+    box-shadow: 0 0 0 3px rgba(212, 167, 106, 0.1);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px; /* 높이 축소 */
+}
+
+.checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs); /* 간격 축소 */
+}
+
+.checkbox-group label {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    font-weight: normal;
+    cursor: pointer;
+}
+
+.checkbox-group input[type="checkbox"] {
+    width: auto;
+}
+
+.btn-primary[type="submit"] {
+    width: 100%;
+    justify-content: center;
+    font-size: 1rem;
+    padding: var(--space-md) var(--space-xl); /* 버튼 패딩 축소 */
+    margin-top: var(--space-lg);
+}
+
 /* ===========================================
-   회원가입 모달
+   회원가입 모달 개선
    =========================================== */
 .signup-modal {
     display: none;
@@ -749,61 +907,70 @@ h1, h2, h3, h4, h5, h6 {
     align-items: center;
     justify-content: center;
     padding: var(--space-xl);
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.signup-modal.show {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .modal-content {
     background: white;
     border-radius: var(--radius-xl);
     width: 100%;
-    max-width: 500px;
+    max-width: 480px; /* 모달 너비 축소 */
     max-height: 90vh;
     overflow-y: auto;
     box-shadow: var(--shadow-xl);
-    animation: modalSlideIn 0.3s ease;
 }
 
-@keyframes modalSlideIn {
-    from {
-        opacity: 0;
-        transform: translateY(-30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+.modal-header {
+    padding: var(--space-xl);
+    background: var(--gradient-primary);
+    color: white;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    position: relative;
 }
 
+.modal-title {
+    font-size: 1.5rem;
+    color: white;
+    margin-bottom: var(--space-sm);
+}
+
+.modal-subtitle {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9rem;
+}
+
+/* 닫기 버튼 스타일 개선 */
 .close-modal {
     position: absolute;
     top: var(--space-lg);
     right: var(--space-lg);
-    background: none;
+    background: rgba(255, 255, 255, 0.1);
     border: none;
-    font-size: 1.5rem;
-    color: var(--gray);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    color: white;
     cursor: pointer;
-    z-index: 10;
     transition: var(--transition-fast);
+    z-index: 10;
+    backdrop-filter: blur(10px);
 }
 
 .close-modal:hover {
-    color: var(--danger);
-}
-
-.modal-header {
-    padding: var(--space-2xl) var(--space-2xl) var(--space-xl);
-    border-bottom: 1px solid var(--gray-light);
-}
-
-.modal-title {
-    font-size: 1.75rem;
-    margin-bottom: var(--space-sm);
-    color: var(--primary);
-}
-
-.modal-subtitle {
-    color: var(--gray);
-    font-size: 0.95rem;
+    background: rgba(255, 255, 255, 0.2);
+    transform: rotate(90deg);
+    color: var(--secondary);
 }
 
 .signup-form {
@@ -819,13 +986,15 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .form-step h4 {
-    font-size: 1.25rem;
-    margin-bottom: var(--space-xl);
+    font-size: 1.125rem;
+    margin-bottom: var(--space-lg);
     color: var(--primary);
+    padding-bottom: var(--space-sm);
+    border-bottom: 1px solid var(--gray-light);
 }
 
 .form-group {
-    margin-bottom: var(--space-lg);
+    margin-bottom: var(--space-md);
 }
 
 .form-group label {
@@ -838,18 +1007,18 @@ h1, h2, h3, h4, h5, h6 {
 
 .form-group input {
     width: 100%;
-    padding: 12px 16px;
+    padding: 10px 14px;
+    font-size: 0.95rem;
     border: 2px solid var(--gray-light);
     border-radius: var(--radius-md);
     font-family: var(--font-body);
-    font-size: 1rem;
     transition: var(--transition-fast);
 }
 
 .form-group input:focus {
     outline: none;
     border-color: var(--secondary);
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    box-shadow: 0 0 0 3px rgba(212, 167, 106, 0.1);
 }
 
 .form-hint {
@@ -939,12 +1108,13 @@ h1, h2, h3, h4, h5, h6 {
 
 .btn-prev-step,
 .btn-next-step,
-.btn-complete {
-    padding: var(--space-lg) var(--space-2xl);
+.btn-complete,
+.btn-close-step {
+    padding: 12px 20px; /* 버튼 패딩 축소 */
     border-radius: var(--radius-lg);
     font-family: var(--font-heading);
     font-weight: 600;
-    font-size: 1rem;
+    font-size: 0.95rem;
     cursor: pointer;
     transition: var(--transition-normal);
     display: flex;
@@ -952,6 +1122,7 @@ h1, h2, h3, h4, h5, h6 {
     justify-content: center;
     gap: var(--space-sm);
     border: none;
+    text-decoration: none;
 }
 
 .btn-prev-step {
@@ -966,7 +1137,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .btn-next-step,
 .btn-complete {
-    background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-dark) 100%);
+    background: var(--gradient-secondary);
     color: white;
 }
 
@@ -978,6 +1149,25 @@ h1, h2, h3, h4, h5, h6 {
 
 .btn-complete {
     background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+}
+
+/* 취소 버튼 스타일 */
+.btn-close-step {
+    background: var(--light-gray);
+    color: var(--gray);
+    border: 1px solid var(--gray-light);
+}
+
+.btn-close-step:hover {
+    background: var(--gray-light);
+    color: var(--primary);
+}
+
+.form-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-md);
+    margin-top: var(--space-xl);
 }
 
 .form-progress {
@@ -1026,14 +1216,14 @@ h1, h2, h3, h4, h5, h6 {
 .progress-step.active {
     background: var(--secondary);
     color: white;
-    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
+    box-shadow: 0 0 0 4px rgba(212, 167, 106, 0.2);
 }
 
 .modal-footer {
-    padding: var(--space-xl);
+    padding: var(--space-lg);
     border-top: 1px solid var(--gray-light);
     text-align: center;
-    color: var(--gray);
+    font-size: 0.9rem;
 }
 
 .modal-footer a {
@@ -1041,9 +1231,22 @@ h1, h2, h3, h4, h5, h6 {
     text-decoration: none;
     font-weight: 600;
     transition: var(--transition-fast);
+    margin-left: var(--space-xs);
 }
 
 .modal-footer a:hover {
+    text-decoration: underline;
+}
+
+/* 로그인 링크 스타일 */
+.switch-to-login {
+    color: var(--secondary);
+    font-weight: 600;
+    text-decoration: none;
+    margin-left: var(--space-xs);
+}
+
+.switch-to-login:hover {
     text-decoration: underline;
 }
 
@@ -1051,7 +1254,7 @@ h1, h2, h3, h4, h5, h6 {
    Footer
    =========================================== */
 .footer {
-    background: var(--dark);
+    background: var(--gradient-primary);
     color: white;
     padding: var(--space-3xl) 0 var(--space-xl);
 }
@@ -1108,11 +1311,13 @@ h1, h2, h3, h4, h5, h6 {
     color: white;
     text-decoration: none;
     transition: var(--transition-fast);
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .social-link:hover {
     background: var(--secondary);
-    transform: translateY(-2px);
+    border-color: var(--secondary);
+    transform: translateY(-2px) rotate(5deg);
 }
 
 .footer-links {
@@ -1151,7 +1356,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .footer-bottom {
-    border-top: 1px solid #374151;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
     padding-top: var(--space-xl);
     display: flex;
     justify-content: space-between;
@@ -1161,7 +1366,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .footer-bottom p {
-    color: #6b7280;
+    color: rgba(255, 255, 255, 0.6);
     font-size: 0.875rem;
 }
 
@@ -1169,11 +1374,11 @@ h1, h2, h3, h4, h5, h6 {
     display: flex;
     align-items: center;
     gap: var(--space-md);
-    color: #6b7280;
+    color: rgba(255, 255, 255, 0.6);
 }
 
 .footer-legal a {
-    color: #9ca3af;
+    color: rgba(255, 255, 255, 0.8);
     text-decoration: none;
     font-size: 0.875rem;
     transition: var(--transition-fast);
@@ -1211,10 +1416,6 @@ h1, h2, h3, h4, h5, h6 {
 @media (max-width: 1024px) {
     .hero-title {
         font-size: 2.75rem;
-    }
-    
-    .hero-visual {
-        width: 40%;
     }
     
     .footer-content {
@@ -1280,18 +1481,6 @@ h1, h2, h3, h4, h5, h6 {
         padding: calc(var(--header-height) + var(--space-2xl)) 0 var(--space-2xl);
     }
     
-    .hero-visual {
-        position: relative;
-        width: 100%;
-        height: 300px;
-        margin-top: var(--space-2xl);
-        transform: none;
-    }
-    
-    .hero-image-wrapper {
-        border-radius: var(--radius-lg);
-    }
-    
     .section-title {
         font-size: 2rem;
     }
@@ -1314,6 +1503,7 @@ h1, h2, h3, h4, h5, h6 {
     .modal-content {
         margin: auto;
         max-height: 85vh;
+        width: 95%;
     }
 }
 
@@ -1345,13 +1535,15 @@ h1, h2, h3, h4, h5, h6 {
         padding-left: 0;
     }
     
-    .form-navigation {
+    .form-navigation,
+    .form-actions {
         flex-direction: column;
     }
     
     .btn-prev-step,
     .btn-next-step,
-    .btn-complete {
+    .btn-complete,
+    .btn-close-step {
         width: 100%;
     }
 }
