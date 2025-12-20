@@ -1,20 +1,20 @@
+// ashop - Main JavaScript
 // DOM 요소
 const menuToggle = document.querySelector('.menu-toggle');
 const navMenu = document.querySelector('.nav-menu');
 const loginModal = document.getElementById('loginModal');
 const closeModal = document.querySelector('.close-modal');
 const loginLink = document.getElementById('loginLink');
-const loginForm = document.querySelector('.login-form');
 const logoutBtn = document.querySelector('.btn-logout');
-const userInfo = document.querySelector('.user-info');
-const githubLoginBtn = document.querySelector('.github-login');
 
 // 모바일 메뉴 토글
-menuToggle.addEventListener('click', () => {
-    navMenu.classList.toggle('active');
+menuToggle?.addEventListener('click', () => {
+    navMenu?.classList.toggle('active');
     const icon = menuToggle.querySelector('i');
-    icon.classList.toggle('fa-bars');
-    icon.classList.toggle('fa-times');
+    if (icon) {
+        icon.classList.toggle('fa-bars');
+        icon.classList.toggle('fa-times');
+    }
 });
 
 // 로그인 링크 클릭
@@ -23,134 +23,59 @@ loginLink?.addEventListener('click', (e) => {
     openLoginModal();
 });
 
-// 모달 열기
-function openLoginModal() {
-    loginModal.style.display = 'flex';
-    document.body.style.overflow = 'hidden';
-}
-
-// 모달 닫기
+// 닫기 버튼 클릭
 closeModal?.addEventListener('click', closeLoginModal);
+
+// 모달 바깥 클릭 시 닫기
 loginModal?.addEventListener('click', (e) => {
     if (e.target === loginModal) {
         closeLoginModal();
     }
 });
 
+// ESC 키로 모달 닫기
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        closeLoginModal();
+    }
+});
+
+// 모달 열기 함수
+function openLoginModal() {
+    const modal = document.getElementById('loginModal');
+    if (modal) {
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+        
+        // 탭 초기화: 로그인 탭 활성화
+        const tabs = document.querySelectorAll('.auth-tab');
+        const forms = document.querySelectorAll('.auth-form');
+        
+        tabs.forEach((tab, index) => {
+            tab.classList.remove('active');
+            forms[index].classList.remove('active');
+        });
+        
+        if (tabs[0]) tabs[0].classList.add('active');
+        if (forms[0]) forms[0].classList.add('active');
+        
+        // 폼 초기화
+        const formsInModal = modal.querySelectorAll('form');
+        formsInModal.forEach(form => {
+            form.reset();
+            // 에러 메시지 숨기기
+            const errorMessages = form.querySelectorAll('.error-message');
+            errorMessages.forEach(msg => msg.classList.remove('show'));
+        });
+    }
+}
+
+// 모달 닫기 함수
 function closeLoginModal() {
-    loginModal.style.display = 'none';
-    document.body.style.overflow = 'auto';
-}
-
-// 로그인 폼 제출
-loginForm?.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    
-    const email = document.getElementById('loginEmail').value;
-    const password = document.getElementById('loginPassword').value;
-    
-    // 간단한 클라이언트 측 유효성 검사
-    if (!email || !password) {
-        alert('이메일과 비밀번호를 입력해주세요.');
-        return;
-    }
-    
-    // 실제로는 서버로 요청을 보내야 합니다
-    // 여기서는 데모용으로 localStorage에 저장
-    const user = {
-        email: email,
-        name: email.split('@')[0],
-        loggedIn: true
-    };
-    
-    localStorage.setItem('ashop_user', JSON.stringify(user));
-    updateLoginUI();
-    closeLoginModal();
-    alert('로그인되었습니다!');
-});
-
-// GitHub 로그인
-githubLoginBtn?.addEventListener('click', () => {
-    // GitHub OAuth 리다이렉트
-    const clientId = 'YOUR_GITHUB_CLIENT_ID'; // 실제 클라이언트 ID로 교체
-    const redirectUri = encodeURIComponent(window.location.origin);
-    const githubAuthUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=user`;
-    
-    window.location.href = githubAuthUrl;
-});
-
-// 로그아웃
-logoutBtn?.addEventListener('click', () => {
-    localStorage.removeItem('ashop_user');
-    updateLoginUI();
-    alert('로그아웃되었습니다.');
-});
-
-// 로그인 상태 업데이트
-function updateLoginUI() {
-    const userData = JSON.parse(localStorage.getItem('ashop_user'));
-    
-    if (userData && userData.loggedIn) {
-        // 로그인 상태일 때
-        loginLink.style.display = 'none';
-        userInfo.style.display = 'flex';
-        
-        const userName = userData.name || userData.email.split('@')[0];
-        document.querySelector('.user-name').textContent = userName;
-        
-        // 아바타 초기
-        const avatar = document.querySelector('.user-avatar');
-        avatar.textContent = userName.charAt(0).toUpperCase();
-        
-        // 아바타 색상 생성
-        const colors = ['#3b82f6', '#10b981', '#8b5cf6', '#ef4444', '#f59e0b'];
-        const colorIndex = userName.charCodeAt(0) % colors.length;
-        avatar.style.backgroundColor = colors[colorIndex];
-    } else {
-        // 로그아웃 상태일 때
-        loginLink.style.display = 'block';
-        userInfo.style.display = 'none';
-    }
-}
-
-// 페이지 로드 시 로그인 상태 확인
-document.addEventListener('DOMContentLoaded', () => {
-    updateLoginUI();
-    
-    // GitHub OAuth 콜백 처리
-    const urlParams = new URLSearchParams(window.location.search);
-    const code = urlParams.get('code');
-    
-    if (code) {
-        // GitHub OAuth 인증 코드가 있으면 처리
-        handleGitHubCallback(code);
-    }
-});
-
-// GitHub 콜백 처리 (데모용)
-async function handleGitHubCallback(code) {
-    // 실제로는 서버에서 처리해야 합니다
-    console.log('GitHub OAuth code:', code);
-    
-    // 데모용: GitHub 사용자 정보 가져오기
-    try {
-        const user = {
-            email: 'github_user@example.com',
-            name: 'GitHub User',
-            loggedIn: true,
-            avatar: 'G'
-        };
-        
-        localStorage.setItem('ashop_user', JSON.stringify(user));
-        updateLoginUI();
-        
-        // URL에서 code 제거
-        window.history.replaceState({}, document.title, window.location.pathname);
-        
-        alert('GitHub으로 로그인되었습니다!');
-    } catch (error) {
-        console.error('GitHub 로그인 오류:', error);
-        alert('GitHub 로그인 중 오류가 발생했습니다.');
+    const modal = document.getElementById('loginModal');
+    if (modal) {
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
     }
 }
 
@@ -158,8 +83,62 @@ async function handleGitHubCallback(code) {
 window.addEventListener('scroll', () => {
     const header = document.querySelector('.main-header');
     if (window.scrollY > 50) {
-        header.style.boxShadow = '0 5px 20px rgba(0, 0, 0, 0.1)';
+        header?.style.setProperty('box-shadow', '0 5px 20px rgba(0, 0, 0, 0.1)');
     } else {
-        header.style.boxShadow = 'var(--shadow)';
+        header?.style.setProperty('box-shadow', 'var(--shadow)');
     }
 });
+
+// 부드러운 스크롤
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        const href = this.getAttribute('href');
+        
+        // #으로 시작하는 내부 링크만 처리
+        if (href.startsWith('#')) {
+            e.preventDefault();
+            
+            const targetId = href.substring(1);
+            const targetElement = document.getElementById(targetId);
+            
+            if (targetElement) {
+                // 헤더 높이 고려
+                const headerHeight = document.querySelector('.main-header')?.offsetHeight || 0;
+                const targetPosition = targetElement.offsetTop - headerHeight - 20;
+                
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });
+                
+                // 모바일 메뉴 닫기
+                if (navMenu?.classList.contains('active')) {
+                    navMenu.classList.remove('active');
+                    const icon = menuToggle?.querySelector('i');
+                    if (icon) {
+                        icon.classList.remove('fa-times');
+                        icon.classList.add('fa-bars');
+                    }
+                }
+            }
+        }
+    });
+});
+
+// 초기화
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('ashop 웹사이트 로드 완료');
+    
+    // 현재 활성 메뉴 표시
+    const currentPath = window.location.hash;
+    if (currentPath) {
+        const activeLink = document.querySelector(`.nav-link[href="${currentPath}"]`);
+        if (activeLink) {
+            activeLink.classList.add('active');
+        }
+    }
+});
+
+// 글로벌 함수로 노출
+window.openLoginModal = openLoginModal;
+window.closeLoginModal = closeLoginModal;
