@@ -1,4 +1,4 @@
-// 인증 관련 기능
+// Auth Manager
 class AuthManager {
     constructor() {
         this.currentUser = null;
@@ -9,20 +9,19 @@ class AuthManager {
         // 페이지 로드 시 로그인 상태 확인
         this.checkLoginStatus();
         
-        // 탭 전환 이벤트
-        this.initAuthTabs();
+        // 헤더 로그인 폼 이벤트
+        this.initHeaderLogin();
         
-        // 로그인 폼 제출
-        this.initLoginForm();
+        // 회원가입 링크 이벤트
+        this.initSignupLinks();
         
-        // 회원가입 폼 제출
+        // 회원가입 폼 이벤트
         this.initSignupForm();
         
         // 로그아웃 이벤트
         this.initLogout();
     }
 
-    // 로그인 상태 확인
     checkLoginStatus() {
         const userData = localStorage.getItem('ashop_user');
         
@@ -31,63 +30,45 @@ class AuthManager {
                 this.currentUser = JSON.parse(userData);
                 this.updateUI();
             } catch (e) {
+                console.error('사용자 데이터 파싱 오류:', e);
                 localStorage.removeItem('ashop_user');
             }
         }
     }
 
-    // 탭 전환 초기화
-    initAuthTabs() {
-        const tabs = document.querySelectorAll('.auth-tab');
-        const forms = document.querySelectorAll('.auth-form');
-        
-        tabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-                const tabId = tab.getAttribute('data-tab');
-                
-                // 모든 탭 비활성화
-                tabs.forEach(t => t.classList.remove('active'));
-                forms.forEach(f => f.classList.remove('active'));
-                
-                // 선택한 탭 활성화
-                tab.classList.add('active');
-                document.getElementById(`${tabId}Form`).classList.add('active');
-            });
-        });
-    }
+    // 헤더 로그인 폼 초기화
+    initHeaderLogin() {
+        const headerLoginForm = document.querySelector('.header-login-form');
+        if (!headerLoginForm) return;
 
-    // 로그인 폼 초기화
-    initLoginForm() {
-        const loginForm = document.getElementById('loginForm');
-        if (!loginForm) return;
-
-        loginForm.addEventListener('submit', async (e) => {
+        headerLoginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
+            const userId = document.getElementById('headerLoginId').value;
+            const password = document.getElementById('headerLoginPassword').value;
             
-            // 유효성 검사
-            if (!this.validateEmail(email)) {
-                this.showError('loginEmail', '유효한 이메일을 입력해주세요.');
-                return;
-            }
-            
-            if (!password || password.length < 6) {
-                this.showError('loginPassword', '비밀번호를 6자 이상 입력해주세요.');
+            if (!userId || !password) {
+                this.showMessage('아이디와 비밀번호를 입력해주세요.', 'error');
                 return;
             }
             
             try {
-                // 실제로는 서버로 요청
-                const user = await this.login(email, password);
+                const user = await this.login(userId, password);
                 
                 if (user) {
-                    this.showMessage('로그인되었습니다!', 'success');
+                    this.showMessage(`${user.name}님, 환영합니다!`, 'success');
                     this.updateUI();
-                    closeLoginModal();
+                    
+                    // 폼 초기화
+                    headerLoginForm.reset();
                 } else {
-                    this.showMessage('이메일 또는 비밀번호가 틀렸습니다.', 'error');
+                    // 로그인 실패 시 회원가입 모달 표시
+                    this.showMessage('아이디 또는 비밀번호가 틀렸습니다. 회원가입을 진행해주세요.', 'error');
+                    
+                    // 2초 후 회원가입 모달 표시
+                    setTimeout(() => {
+                        this.openSignupModal();
+                    }, 2000);
                 }
             } catch (error) {
                 console.error('로그인 오류:', error);
@@ -96,60 +77,138 @@ class AuthManager {
         });
     }
 
+    // 회원가입 링크 초기화
+    initSignupLinks() {
+        const signupLinks = document.querySelectorAll('.signup-link, .signup-link-footer');
+        signupLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.openSignupModal();
+            });
+        });
+    }
+
+    // 회원가입 모달 열기
+    openSignupModal() {
+        const modal = document.getElementById('signupModal');
+        if (modal) {
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            
+            // 첫 번째 단계로 초기화
+            this.resetSignupForm();
+        }
+    }
+
+    // 회원가입 모달 닫기
+    closeSignupModal() {
+        const modal = document.getElementById('signupModal');
+        if (modal) {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+    }
+
     // 회원가입 폼 초기화
     initSignupForm() {
         const signupForm = document.getElementById('signupForm');
         if (!signupForm) return;
 
+        // 다음 단계 버튼
+        document.querySelectorAll('.btn-next-step').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const nextStepId = e.target.getAttribute('data-next');
+                this.goToSignupStep(nextStepId);
+            });
+        });
+
+        // 이전 단계 버튼
+        document.querySelectorAll('.btn-prev-step').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const prevStepId = e.target.getAttribute('data-prev');
+                this.goToSignupStep(prevStepId);
+            });
+        });
+
+        // 전체 동의 체크박스
+        const termAll = document.getElementById('termAll');
+        if (termAll) {
+            termAll.addEventListener('change', (e) => {
+                const isChecked = e.target.checked;
+                document.getElementById('termService').checked = isChecked;
+                document.getElementById('termPrivacy').checked = isChecked;
+                document.getElementById('termMarketing').checked = isChecked;
+            });
+        }
+
+        // 폼 제출
         signupForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            const name = document.getElementById('signupName').value;
-            const phone = document.getElementById('signupPhone').value;
-            const email = document.getElementById('signupEmail').value;
+            // 1단계: 아이디, 비밀번호 검증
+            const userId = document.getElementById('signupUserId').value;
             const password = document.getElementById('signupPassword').value;
             const confirmPassword = document.getElementById('confirmPassword').value;
-            const agreeTerms = document.getElementById('agreeTerms').checked;
             
-            // 유효성 검사
-            if (!name || name.trim().length < 2) {
-                this.showError('signupName', '성명을 2자 이상 입력해주세요.');
+            if (!userId || userId.length < 4 || userId.length > 20) {
+                this.showMessage('아이디는 4-20자로 입력해주세요.', 'error');
                 return;
             }
             
-            if (!this.validatePhone(phone)) {
-                this.showError('signupPhone', '올바른 핸드폰번호 형식(010-1234-5678)으로 입력해주세요.');
-                return;
-            }
-            
-            if (!this.validateEmail(email)) {
-                this.showError('signupEmail', '유효한 이메일을 입력해주세요.');
-                return;
-            }
-            
-            if (!password || password.length < 6) {
-                this.showError('signupPassword', '비밀번호를 6자 이상 입력해주세요.');
+            if (!password || password.length < 8) {
+                this.showMessage('비밀번호는 8자 이상 입력해주세요.', 'error');
                 return;
             }
             
             if (password !== confirmPassword) {
-                this.showError('confirmPassword', '비밀번호가 일치하지 않습니다.');
+                this.showMessage('비밀번호가 일치하지 않습니다.', 'error');
                 return;
             }
             
-            if (!agreeTerms) {
-                this.showMessage('약관에 동의해주세요.', 'error');
+            // 2단계: 개인정보 검증
+            const name = document.getElementById('signupName').value;
+            const phone = document.getElementById('signupPhone').value;
+            const email = document.getElementById('signupEmail').value;
+            
+            if (!name || name.trim().length < 2) {
+                this.showMessage('성명을 정확히 입력해주세요.', 'error');
+                return;
+            }
+            
+            if (!this.validatePhone(phone)) {
+                this.showMessage('올바른 핸드폰번호 형식으로 입력해주세요.', 'error');
+                return;
+            }
+            
+            if (!this.validateEmail(email)) {
+                this.showMessage('유효한 이메일 주소를 입력해주세요.', 'error');
+                return;
+            }
+            
+            // 3단계: 약관 동의 검증
+            if (!document.getElementById('termService').checked || 
+                !document.getElementById('termPrivacy').checked) {
+                this.showMessage('필수 약관에 동의해주세요.', 'error');
                 return;
             }
             
             try {
-                // 실제로는 서버로 요청
-                const user = await this.signup({ name, phone, email, password });
+                const userData = {
+                    userId: userId,
+                    name: name,
+                    phone: phone,
+                    email: email,
+                    password: password,
+                    company: document.getElementById('companyName').value || '',
+                    marketingAgree: document.getElementById('termMarketing').checked
+                };
+                
+                const user = await this.signup(userData);
                 
                 if (user) {
-                    this.showMessage('회원가입이 완료되었습니다!', 'success');
+                    this.showMessage('회원가입이 완료되었습니다! 자동으로 로그인됩니다.', 'success');
+                    this.closeSignupModal();
                     this.updateUI();
-                    closeLoginModal();
                 }
             } catch (error) {
                 console.error('회원가입 오류:', error);
@@ -158,18 +217,51 @@ class AuthManager {
         });
     }
 
-    // 로그인 처리 (데모용)
-    async login(email, password) {
-        // 실제로는 서버 API 호출
-        // 데모용으로 localStorage 사용
+    // 회원가입 단계 이동
+    goToSignupStep(stepId) {
+        const steps = document.querySelectorAll('.form-step');
+        steps.forEach(step => step.classList.remove('active'));
         
-        // 이미 저장된 사용자 확인
+        const targetStep = document.getElementById(stepId);
+        if (targetStep) {
+            targetStep.classList.add('active');
+            
+            // 진행바 업데이트
+            const stepNumber = parseInt(stepId.replace('step', ''));
+            const progress = (stepNumber / 3) * 100;
+            document.querySelector('.progress-fill').style.width = `${progress}%`;
+            
+            // 진행 단계 표시 업데이트
+            const progressSteps = document.querySelectorAll('.progress-step');
+            progressSteps.forEach((step, index) => {
+                if (index < stepNumber) {
+                    step.classList.add('active');
+                } else {
+                    step.classList.remove('active');
+                }
+            });
+        }
+    }
+
+    // 회원가입 폼 초기화
+    resetSignupForm() {
+        this.goToSignupStep('step1');
+        
+        const form = document.getElementById('signupForm');
+        if (form) {
+            form.reset();
+        }
+    }
+
+    // 로그인 처리
+    async login(userId, password) {
+        // 저장된 사용자 확인
         const users = JSON.parse(localStorage.getItem('ashop_users') || '[]');
-        const user = users.find(u => u.email === email && u.password === password);
+        const user = users.find(u => u.userId === userId && u.password === password);
         
         if (user) {
             const userData = {
-                id: user.id,
+                userId: user.userId,
                 name: user.name,
                 phone: user.phone,
                 email: user.email,
@@ -180,16 +272,16 @@ class AuthManager {
             localStorage.setItem('ashop_user', JSON.stringify(userData));
             this.currentUser = userData;
             
-            // Google Sheets에도 저장 (선택사항)
+            // Google Sheets에 로그인 기록 저장
             await this.saveUserDataToSheets(userData, '로그인');
             
             return userData;
         }
         
-        // 데모용 계정 (초기 테스트용)
-        if (email === 'test@ashop.com' && password === '123456') {
+        // 테스트 계정
+        if (userId === 'test' && password === '12345678') {
             const userData = {
-                id: 'demo_001',
+                userId: 'test',
                 name: '테스트사용자',
                 phone: '010-1234-5678',
                 email: 'test@ashop.com',
@@ -206,14 +298,18 @@ class AuthManager {
         return null;
     }
 
-    // 회원가입 처리 (데모용)
+    // 회원가입 처리
     async signup(userData) {
-        // 사용자 목록 가져오기
         const users = JSON.parse(localStorage.getItem('ashop_users') || '[]');
+        
+        // 아이디 중복 확인
+        if (users.some(u => u.userId === userData.userId)) {
+            throw new Error('이미 사용 중인 아이디입니다.');
+        }
         
         // 이메일 중복 확인
         if (users.some(u => u.email === userData.email)) {
-            throw new Error('이미 가입된 이메일입니다.');
+            throw new Error('이미 사용 중인 이메일입니다.');
         }
         
         // 새 사용자 추가
@@ -226,9 +322,9 @@ class AuthManager {
         users.push(newUser);
         localStorage.setItem('ashop_users', JSON.stringify(users));
         
-        // 로그인 상태로 설정
+        // 자동 로그인
         const loginData = {
-            id: newUser.id,
+            userId: newUser.userId,
             name: newUser.name,
             phone: newUser.phone,
             email: newUser.email,
@@ -265,37 +361,42 @@ class AuthManager {
 
     // UI 업데이트
     updateUI() {
-        const loginLink = document.getElementById('loginLink');
         const userInfo = document.querySelector('.user-info');
-        const userName = document.querySelector('.user-name');
-        const userAvatar = document.querySelector('.user-avatar');
+        const loginFormContainer = document.querySelector('.login-form-container');
         
         if (this.currentUser && this.currentUser.loggedIn) {
             // 로그인 상태
-            if (loginLink) loginLink.style.display = 'none';
-            if (userInfo) userInfo.style.display = 'flex';
-            
-            if (userName) {
-                userName.textContent = this.currentUser.name || this.currentUser.email.split('@')[0];
+            if (userInfo) {
+                userInfo.style.display = 'flex';
+                document.querySelector('.user-name').textContent = this.currentUser.name;
+                
+                const avatar = document.querySelector('.user-avatar');
+                if (avatar) {
+                    avatar.textContent = this.currentUser.name.charAt(0).toUpperCase();
+                    
+                    // 아바타 색상
+                    const colors = ['#3b82f6', '#10b981', '#8b5cf6', '#ef4444', '#f59e0b'];
+                    const colorIndex = this.currentUser.name.charCodeAt(0) % colors.length;
+                    avatar.style.background = colors[colorIndex];
+                }
             }
             
-            if (userAvatar) {
-                const name = this.currentUser.name || this.currentUser.email;
-                userAvatar.textContent = name.charAt(0).toUpperCase();
-                
-                // 아바타 색상 생성
-                const colors = ['#3b82f6', '#10b981', '#8b5cf6', '#ef4444', '#f59e0b'];
-                const colorIndex = name.charCodeAt(0) % colors.length;
-                userAvatar.style.backgroundColor = colors[colorIndex];
+            if (loginFormContainer) {
+                loginFormContainer.style.display = 'none';
             }
         } else {
             // 로그아웃 상태
-            if (loginLink) loginLink.style.display = 'block';
-            if (userInfo) userInfo.style.display = 'none';
+            if (userInfo) {
+                userInfo.style.display = 'none';
+            }
+            
+            if (loginFormContainer) {
+                loginFormContainer.style.display = 'flex';
+            }
         }
     }
 
-    // Google Sheets에 사용자 데이터 저장
+    // Google Sheets에 저장
     async saveUserDataToSheets(userData, action) {
         try {
             const timestamp = new Date().toLocaleString('ko-KR');
@@ -303,7 +404,7 @@ class AuthManager {
                 formType: '사용자계정',
                 timestamp: timestamp,
                 action: action,
-                userId: userData.id,
+                userId: userData.userId,
                 userName: userData.name,
                 userPhone: userData.phone,
                 userEmail: userData.email
@@ -333,19 +434,6 @@ class AuthManager {
     validatePhone(phone) {
         const phoneRegex = /^[0-9]{2,3}-[0-9]{3,4}-[0-9]{4}$/;
         return phoneRegex.test(phone);
-    }
-
-    // 에러 표시
-    showError(fieldId, message) {
-        const field = document.getElementById(fieldId);
-        const errorDiv = field.parentElement.querySelector('.error-message');
-        
-        if (errorDiv) {
-            errorDiv.textContent = message;
-            errorDiv.classList.add('show');
-        }
-        
-        field.focus();
     }
 
     // 메시지 표시
@@ -397,32 +485,45 @@ class AuthManager {
     }
 }
 
-// 전역 함수
-function closeLoginModal() {
-    const modal = document.getElementById('loginModal');
-    if (modal) {
-        modal.style.display = 'none';
-        document.body.style.overflow = 'auto';
-        
-        // 폼 초기화
-        const forms = document.querySelectorAll('.auth-form');
-        forms.forEach(form => form.reset());
-        
-        // 에러 메시지 숨기기
-        document.querySelectorAll('.error-message').forEach(el => {
-            el.classList.remove('show');
-        });
+// 글로벌 함수
+function closeSignupModal() {
+    const authManager = window.authManager;
+    if (authManager) {
+        authManager.closeSignupModal();
     }
 }
 
-// 모달 열기/닫기 함수는 main.js에서 정의됨
-
-// 페이지 로드 시 인증 매니저 초기화
+// 페이지 로드 시 초기화
 let authManager;
+
 document.addEventListener('DOMContentLoaded', () => {
     authManager = new AuthManager();
+    window.authManager = authManager;
+    
+    // 모달 닫기 버튼
+    document.querySelectorAll('.close-modal').forEach(button => {
+        button.addEventListener('click', () => {
+            closeSignupModal();
+        });
+    });
+    
+    // 모달 바깥 클릭 시 닫기
+    const signupModal = document.getElementById('signupModal');
+    if (signupModal) {
+        signupModal.addEventListener('click', (e) => {
+            if (e.target === signupModal) {
+                closeSignupModal();
+            }
+        });
+    }
+    
+    // ESC 키로 모달 닫기
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            closeSignupModal();
+        }
+    });
 });
 
-// 글로벌 접근
-window.AuthManager = AuthManager;
-window.closeLoginModal = closeLoginModal;
+// 글로벌 함수 노출
+window.closeSignupModal = closeSignupModal;
