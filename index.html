@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -33,31 +32,22 @@
                     <a href="#philosophy" class="nav-link">철학</a>
                     <a href="#services" class="nav-link">서비스</a>
                     <a href="#process" class="nav-link">프로세스</a>
-                    <a href="#contact" class="nav-link">문의하기</a>
                     <a href="https://thebestys.github.io/as/" class="nav-link">견적신청</a>
                     
-                    <!-- 로그인/사용자 정보 영역 -->
+                    <!-- 변경: 관리자 링크 추가 -->
+                    <a href="https://thebestys.github.io/admin/" 
+                       class="nav-link admin-link" 
+                       target="_blank">
+                        <i class="fas fa-lock"></i> 관리자
+                    </a>
+                    
+                    <!-- 변경: 로그인 버튼으로 간소화 -->
                     <div class="auth-area">
-                        <!-- 로그인 상태 -->
-                        <div class="user-info">
-                            <div class="user-avatar"></div>
-                            <span class="user-name"></span>
-                            <button class="btn-logout">로그아웃</button>
-                        </div>
-                        
-                        <!-- 비로그인 상태 -->
-                        <div class="login-form-container">
-                            <form class="header-login-form">
-                                <input type="text" class="login-input" id="headerLoginId" placeholder="아이디">
-                                <input type="password" class="login-input" id="headerLoginPassword" placeholder="비밀번호">
-                                <button type="submit" class="btn-login-small">로그인</button>
-                            </form>
-                            <div class="login-links">
-                                <a href="#" class="signup-link">회원가입</a>
-                                <span class="divider">|</span>
-                                <a href="#" class="find-link">아이디/비밀번호 찾기</a>
-                            </div>
-                        </div>
+                        <a href="https://thebestys.github.io/login/" 
+                           class="btn-login-small" 
+                           target="_blank">
+                            <i class="fas fa-sign-in-alt"></i> 로그인
+                        </a>
                     </div>
                 </div>
                 
@@ -81,8 +71,8 @@
                     전략적 접근으로 시장에서 돋보이는 브랜드 아이덴티티를 설계합니다.
                 </p>
                 <div class="hero-buttons">
-                    <a href="#estimate" class="btn-primary">
-                        <i class="fas fa-rocket"></i> 무료 컨설팅 신청
+                    <a href="https://thebestys.github.io/as/" class="btn-primary">
+                        <i class="fas fa-rocket"></i> 견적신청
                     </a>
                     <a href="#philosophy" class="btn-secondary">
                         <i class="fas fa-play-circle"></i> 브랜드 철학 살펴보기
@@ -282,30 +272,6 @@
         </div>
     </section>
 
-    <!-- 견적 신청 섹션 -->
-    <section class="estimate-section" id="estimate">
-        <div class="container">
-            <div class="section-header">
-                <span class="section-label">Get Started</span>
-                <h2 class="section-title">무료 컨설팅 신청</h2>
-                <p class="section-subtitle">프로젝트에 맞는 맞춤형 솔루션 제안을 받아보세요</p>
-            </div>
-            <!-- 폼은 form-handler.js에서 자동 삽입됨 -->
-        </div>
-    </section>
-
-    <!-- 문의하기 섹션 -->
-    <section class="contact-section" id="contact">
-        <div class="container">
-            <div class="section-header">
-                <span class="section-label">Contact Us</span>
-                <h2 class="section-title">문의하기</h2>
-                <p class="section-subtitle">프로젝트에 대해 궁금한 점이 있으시면 언제든지 연락주세요</p>
-            </div>
-            <!-- 폼은 form-handler.js에서 자동 삽입됨 -->
-        </div>
-    </section>
-
     <!-- 푸터 -->
     <footer class="footer">
         <div class="container">
@@ -329,7 +295,7 @@
                         <a href="#philosophy">브랜드 철학</a>
                         <a href="#services">서비스 소개</a>
                         <a href="#process">제작 프로세스</a>
-                        <a href="#estimate">견적 신청</a>
+                        <a href="https://thebestys.github.io/as/">견적 신청</a>
                     </div>
                     
                     <div class="footer-column">
@@ -341,8 +307,8 @@
                     
                     <div class="footer-column">
                         <h4>계정</h4>
-                        <a href="#" class="signup-link-footer">회원가입</a>
-                        <a href="#" class="login-link-footer">로그인</a>
+                        <a href="https://thebestys.github.io/login/" target="_blank">로그인</a>
+                        <a href="https://thebestys.github.io/admin/" target="_blank">관리자</a>
                         <a href="#privacy">개인정보처리방침</a>
                         <a href="#terms">이용약관</a>
                     </div>
@@ -362,157 +328,6 @@
         </div>
     </footer>
 
-<!-- 회원가입 모달 -->
-<div class="signup-modal" id="signupModal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h3 class="modal-title">Premium Membership</h3>
-            <p class="modal-subtitle">프리미엄 컨설팅 서비스를 경험해보세요</p>
-            <button class="close-modal" onclick="closeSignupModal()">&times;</button>
-        </div>
-        
-        <form class="signup-form" id="signupForm">
-            <!-- Step 1: 아이디/비밀번호 -->
-            <div class="form-step active" id="step1">
-                <h4>아이디 설정</h4>
-                
-                <div class="form-group">
-                    <label for="signupUserId">아이디 *</label>
-                    <input type="text" id="signupUserId" name="userId" placeholder="영문, 숫자 조합 4-20자" required>
-                    <div class="form-hint">회원님의 고유 아이디를 설정해주세요</div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="signupPassword">비밀번호 *</label>
-                    <input type="password" id="signupPassword" name="password" placeholder="영문, 숫자, 특수문자 조합 8자 이상" required>
-                    <div class="form-hint">보안을 위해 강력한 비밀번호를 설정해주세요</div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="confirmPassword">비밀번호 확인 *</label>
-                    <input type="password" id="confirmPassword" name="confirmPassword" placeholder="비밀번호를 다시 입력해주세요" required>
-                </div>
-                
-                <div class="form-actions">
-                    <button type="button" class="btn-secondary btn-close-step" onclick="closeSignupModal()">
-                        <i class="fas fa-times"></i> 취소
-                    </button>
-                    <button type="button" class="btn-next-step" data-next="step2">
-                        다음 단계 <i class="fas fa-arrow-right"></i>
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Step 2: 개인정보 -->
-            <div class="form-step" id="step2">
-                <h4>개인정보 입력</h4>
-                
-                <div class="form-group">
-                    <label for="signupName">성명 *</label>
-                    <input type="text" id="signupName" name="name" placeholder="실명을 입력해주세요" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="signupPhone">핸드폰번호 *</label>
-                    <input type="tel" id="signupPhone" name="phone" placeholder="010-1234-5678" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="signupEmail">이메일 *</label>
-                    <input type="email" id="signupEmail" name="email" placeholder="example@ashop.design" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="companyName">회사명 (선택)</label>
-                    <input type="text" id="companyName" name="company" placeholder="소속 회사명">
-                </div>
-                
-                <div class="form-navigation">
-                    <button type="button" class="btn-prev-step" data-prev="step1">
-                        <i class="fas fa-arrow-left"></i> 이전
-                    </button>
-                    <button type="button" class="btn-secondary btn-close-step" onclick="closeSignupModal()">
-                        <i class="fas fa-times"></i> 취소
-                    </button>
-                    <button type="button" class="btn-next-step" data-next="step3">
-                        다음 단계 <i class="fas fa-arrow-right"></i>
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Step 3: 약관동의 -->
-            <div class="form-step" id="step3">
-                <h4>약관 동의</h4>
-                
-                <div class="terms-group">
-                    <div class="term-item">
-                        <label class="term-checkbox">
-                            <input type="checkbox" id="termAll" name="termAll">
-                            <span>전체 약관에 동의합니다</span>
-                        </label>
-                    </div>
-                    
-                    <div class="term-item">
-                        <label class="term-checkbox">
-                            <input type="checkbox" id="termService" name="termService" required>
-                            <span>서비스 이용약관 동의 <span class="term-required">(필수)</span></span>
-                        </label>
-                        <a href="#" class="term-view">보기</a>
-                    </div>
-                    
-                    <div class="term-item">
-                        <label class="term-checkbox">
-                            <input type="checkbox" id="termPrivacy" name="termPrivacy" required>
-                            <span>개인정보 처리방침 동의 <span class="term-required">(필수)</span></span>
-                        </label>
-                        <a href="#" class="term-view">보기</a>
-                    </div>
-                    
-                    <div class="term-item">
-                        <label class="term-checkbox">
-                            <input type="checkbox" id="termMarketing" name="termMarketing">
-                            <span>마케팅 정보 수신 동의 <span class="term-optional">(선택)</span></span>
-                        </label>
-                    </div>
-                </div>
-                
-                <div class="form-navigation">
-                    <button type="button" class="btn-prev-step" data-prev="step2">
-                        <i class="fas fa-arrow-left"></i> 이전
-                    </button>
-                    <button type="button" class="btn-secondary btn-close-step" onclick="closeSignupModal()">
-                        <i class="fas fa-times"></i> 취소
-                    </button>
-                    <button type="submit" class="btn-complete">
-                        <i class="fas fa-check-circle"></i> 회원가입 완료
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Progress Bar -->
-            <div class="form-progress">
-                <div class="progress-bar">
-                    <div class="progress-fill" style="width: 33%"></div>
-                </div>
-                <div class="progress-steps">
-                    <span class="progress-step active">1</span>
-                    <span class="progress-step">2</span>
-                    <span class="progress-step">3</span>
-                </div>
-            </div>
-        </form>
-        
-        <div class="modal-footer">
-            <p>이미 계정이 있으신가요? 
-                <a href="#" class="switch-to-login" onclick="showHeaderLogin()">
-                    로그인
-                </a>
-            </p>
-        </div>
-    </div>
-</div>
-    
-    
     <!-- JavaScript -->
     <script src="js/main.js"></script>
     <script src="js/form-handler.js"></script>
@@ -521,6 +336,19 @@
     <!-- Google Sheets 연동 설정 -->
     <script>
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxKeEtnfDPSuZunaw8nYVBWA9WnDeEwHi_G4zu6g_KlhLCisq8kmAiZeVs1l4N4yhS6/exec';
+    </script>
+    
+    <!-- 수정된 JavaScript 코드 (간단화) -->
+    <script>
+        // 기존 폼 관련 코드 제거를 위한 오버라이드
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('ashop 홈페이지 로드됨 - 간소화 버전');
+            
+            // 기존 폼 삽입 코드를 비활성화
+            if (typeof window.insertForms === 'function') {
+                console.log('폼 삽입 기능 비활성화됨');
+            }
+        });
     </script>
 </body>
 </html>
